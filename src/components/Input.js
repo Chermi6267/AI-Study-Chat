@@ -1,16 +1,17 @@
 import React, { useContext } from 'react'
 import Camera from './svg/Camera'
 import Micro from './svg/Micro'
-import { userMenuContext } from './Main'
+import { userMenuContext, chatMenuContext } from './Main'
 
 export default function Input({ inputRef }) {
   const [isUserMenuOpen] = useContext(userMenuContext)
+  const [isChatMenuOpen] = useContext(chatMenuContext)
 
   return (
     <div
       className='input-wrapper'
       ref={inputRef}
-      style={{ pointerEvents: isUserMenuOpen ? 'none' : 'auto' }}>
+      style={{ pointerEvents: isUserMenuOpen || isChatMenuOpen ? 'none' : 'auto' }}>
       <div className='inputbox'>
         <div className='input-container'>
           <input className='main-input' placeholder='Сообщение' autoComplete='off' />

@@ -4,14 +4,18 @@ import UserMenu from './userMenu';
 import Messages from './messages/Messages';
 import Input from './Input'
 import { OrintationContext } from './providers/OrintationProvider';
+import Chats from './chats';
 
 
 export const userMenuContext = createContext()
+export const chatMenuContext = createContext()
+
 
 export default function Main() {
-    const [isUserMenuOpen, setIsUserMenuOpen] = useState(false)
-
     const inputRef = useRef();
+
+    const [isUserMenuOpen, setIsUserMenuOpen] = useState(false)
+    const [isChatMenuOpen, setIsChatMenuOpen] = useState(false)
 
     const [navBarIsRight, setNavBarIsRight] = useContext(OrintationContext)
 
@@ -38,11 +42,13 @@ export default function Main() {
         />
     ), [messageNavbarHeight, navBarIsRight, inputRef, setNavBarIsRight]);
 
+
     return (
-        <>
-            <userMenuContext.Provider value={[isUserMenuOpen, setIsUserMenuOpen]}>
+        <userMenuContext.Provider value={[isUserMenuOpen, setIsUserMenuOpen]}>
+            <chatMenuContext.Provider value={[isChatMenuOpen, setIsChatMenuOpen]}>
+                <UserMenu />
+                <Chats />
                 <div className='main-page-container'>
-                    <UserMenu />
                     <div className='message-navbar'
                         style={{
                             flexDirection: navBarIsRight ? 'row' : 'row-reverse',
@@ -53,8 +59,8 @@ export default function Main() {
                     </div>
                     {<Input inputRef={inputRef} />}
                 </div>
-            </userMenuContext.Provider>
-        </>
+            </chatMenuContext.Provider >
+        </userMenuContext.Provider>
     )
 }
 

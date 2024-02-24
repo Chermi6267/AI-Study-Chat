@@ -1,15 +1,18 @@
 import React, { useState, useContext } from 'react'
 import { motion } from "framer-motion"
 import { OrintationContext } from '../providers/OrintationProvider'
+import { chatMenuContext } from '../Main'
 
 export default function Chat({ showAll, divVariants }) {
 
     const [animate, setAnimate] = useState(false)
     const [navBarIsRight] = useContext(OrintationContext)
+    const [isChatMenuOpen, setIsChatMenuOpen] = useContext(chatMenuContext)
 
     const openChats = () => {
         setAnimate(!animate);
         setTimeout(() => {
+            setIsChatMenuOpen(!isChatMenuOpen)
             setAnimate(animate);
         }, 200)
     }

@@ -98,8 +98,15 @@ export default function Messages() {
 
     const messageRef = useRef(null)
     useEffect(() => {
-        messageRef.current.scrollTop = messageRef.current.scrollHeight;
-    }, [])
+        if (messageRef.current && messageRef) {
+            const element = messageRef.current;
+            element.scroll({
+                top: element.scrollHeight,
+                left: 0,
+                behavior: "smooth"
+            })
+        }
+    }, [messageRef])
 
     return (
         <div ref={messageRef} className='messages-wrapper'>

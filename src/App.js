@@ -11,6 +11,7 @@ import Login from './components/regLog/Login';
 import { ThemeProvider } from './components/providers/ThemeProvider';
 import { OrintationProvider } from './components/providers/OrintationProvider';
 
+
 export default function App() {
   return (
     <ThemeProvider>
@@ -25,7 +26,7 @@ export default function App() {
             </Routes>
           </Router>
         </div >
-      </OrintationProvider>
-    </ThemeProvider>
+      </OrintationProvider >
+    </ThemeProvider >
   )
 }

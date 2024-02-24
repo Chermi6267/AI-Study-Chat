@@ -13,12 +13,12 @@ export default function UserMenu() {
     const divVariants1 = {
         hidden: {
             transform: 'translate(-50%, -400%)',
-            width: ['70%', '110%']
+            width: ['70%', '100%']
         },
         visible: {
             transform: 'translate(-50%, -75%)',
-            width: ['110%', '70%']
-        }
+            width: ['100%', '70%']
+        },
     }
 
     const userMenuRef = useRef(null)
@@ -41,14 +41,21 @@ export default function UserMenu() {
             className='user-menu-wrapper'
             variants={divVariants1}
             initial='hidden'
-            animate={isUserMenuOpen ? 'visible' : 'hidden'}>
+            animate={isUserMenuOpen ? 'visible' : 'hidden'}
+            transition={{
+                duration: 0.3
+            }}>
             <motion.div
                 className='user-menu-container'>
                 <div className='info-container'>
                     <Ava />
                     <UserInfo profInfo={profInfo} />
                 </div>
-                <button className='delete-all'>
+                <button
+                    className='delete-all'
+                    onClick={() => {
+                        window.location.href = "/login";
+                    }}>
                     <p>Выйти</p>
                 </button>
             </motion.div>
