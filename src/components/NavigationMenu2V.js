@@ -9,7 +9,6 @@ import OrintationArrow from './svg/OrintationArrow';
 import User from './svg/User'
 import { ThemeContext } from './providers/ThemeProvider';
 import { OrintationContext } from './providers/OrintationProvider';
-import { userMenuContext, chatMenuContext } from './Main'
 
 
 export default function NavigationMenu2V({ messageNavbarHeight }) {
@@ -20,8 +19,7 @@ export default function NavigationMenu2V({ messageNavbarHeight }) {
 
     const [isDarkMode, setIsDarkMode] = useContext(ThemeContext)
     const [navBarIsRight, setNavBarIsRight] = useContext(OrintationContext)
-    const [isUserMenuOpen] = useContext(userMenuContext)
-    const [isChatMenuOpen] = useContext(chatMenuContext)
+
 
     const dotsRef = useRef(null)
     const [navHeight, setNavHeight] = useState(48)
@@ -78,8 +76,7 @@ export default function NavigationMenu2V({ messageNavbarHeight }) {
             className={'navigation-wrapper' + (navBarIsRight ? ' right-side' : ' left-side')}
             drag="y"
             style={{
-                y: navBarY > bottomConstraint || navBarY > window.innerHeight ? bottomConstraint : navBarY,
-                pointerEvents: isUserMenuOpen || isChatMenuOpen ? 'none' : 'auto'
+                y: navBarY > bottomConstraint || navBarY > window.innerHeight ? bottomConstraint : navBarY
             }}
             dragElastic={0.2}
             dragConstraints={{ top: (window.innerHeight * 0.05), bottom: bottomConstraint }}

@@ -5,6 +5,7 @@ import Messages from './messages/Messages';
 import Input from './Input'
 import { OrintationContext } from './providers/OrintationProvider';
 import Chats from './chats';
+import Cap from './userMenu/Cap';
 
 
 export const userMenuContext = createContext()
@@ -42,13 +43,13 @@ export default function Main() {
         />
     ), [messageNavbarHeight, navBarIsRight, inputRef, setNavBarIsRight]);
 
-
     return (
         <userMenuContext.Provider value={[isUserMenuOpen, setIsUserMenuOpen]}>
             <chatMenuContext.Provider value={[isChatMenuOpen, setIsChatMenuOpen]}>
                 <UserMenu />
                 <Chats />
                 <div className='main-page-container'>
+                    <Cap />
                     <div className='message-navbar'
                         style={{
                             flexDirection: navBarIsRight ? 'row' : 'row-reverse',
@@ -60,19 +61,6 @@ export default function Main() {
                     {<Input inputRef={inputRef} />}
                 </div>
             </chatMenuContext.Provider >
-        </userMenuContext.Provider>
+        </userMenuContext.Provider >
     )
 }
-
-// isActive={() => setIsActive(!isActive)}
-// {/* {<BurgerMenu
-//     isActive={isActive}
-//     setIsActive={() => setIsActive(!isActive)}
-//     isActiveUser={isActiveUser}
-//     setIsActiveUser={() => setIsActiveUser(!isActiveUser)}
-//     navBarOrintation={navBarIsRight}
-//     setNavBarOrintation={() => setNavBarOrintation()}
-//     isDarkMode={isDarkMode}
-//     setTheme={() => setTheme()}
-// />} */}
-// const [isActive, setIsActive] = useState(false)

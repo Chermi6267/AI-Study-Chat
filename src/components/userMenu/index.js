@@ -1,9 +1,10 @@
 import React, { useContext, useRef } from 'react'
 import { motion } from 'framer-motion'
 import Ava from '../svg/Ava'
-import UserInfo from '../burgerMenu/UserInfo'
 import { userMenuContext } from '../Main'
 import { useClickOutside } from '../hooks/useClickOutside'
+import Phone from '../svg/Phone'
+import Email from '../svg/Email'
 
 
 export default function UserMenu() {
@@ -13,11 +14,9 @@ export default function UserMenu() {
     const divVariants1 = {
         hidden: {
             transform: 'translate(-50%, -400%)',
-            width: ['70%', '100%']
         },
         visible: {
             transform: 'translate(-50%, -75%)',
-            width: ['100%', '70%']
         },
     }
 
@@ -30,9 +29,21 @@ export default function UserMenu() {
         }
     })
 
+    const newChatVariants = {
+        hidden: {
+            translateY: -30,
+            opasity: 0
+        },
+        visible: {
+            translateY: 1,
+            opasity: 1
+        },
+    }
+
     const profInfo = {
         userName: 'Victor Chermi',
-        userEmail: 'chermi6267@gmail.com'
+        userEmail: 'chermi6267@gmail.com',
+        userPhone: '+79991730587'
     }
 
     return (
@@ -41,24 +52,43 @@ export default function UserMenu() {
             className='user-menu-wrapper'
             variants={divVariants1}
             initial='hidden'
-            animate={isUserMenuOpen ? 'visible' : 'hidden'}
-            transition={{
-                duration: 0.3
-            }}>
-            <motion.div
-                className='user-menu-container'>
-                <div className='info-container'>
+            animate={isUserMenuOpen ? 'visible' : 'hidden'}>
+            <motion.div className='user-menu-container'>
+                <div className='ava-username-container'>
                     <Ava />
-                    <UserInfo profInfo={profInfo} />
+                    <p>{profInfo.userName}</p>
                 </div>
-                <button
-                    className='delete-all'
-                    onClick={() => {
-                        window.location.href = "/login";
-                    }}>
-                    <p>Выйти</p>
-                </button>
+                <div className='info-container'>
+                    <Email />
+                    <div style={{ maxWidth: 'calc(100% - 1.3em)' }}>
+                        <h2>{profInfo.userEmail}</h2>
+                        <p>Изменить email</p>
+                    </div>
+                </div>
+                <div className='info-container'>
+                    <Phone />
+                    <div style={{ maxWidth: 'calc(100% - 1.3em)' }}>
+                        <h2>{profInfo.userPhone}</h2>
+                        <p>Изменить номер</p>
+                    </div>
+                </div>
             </motion.div>
+            <div className='new-chat-btn-container'>
+                <motion.div
+                    style={{ width: '80%' }}
+                    initial='hidden'
+                    variants={newChatVariants}
+                    animate={isUserMenuOpen ? 'visible' : 'hidden'}
+                    transition={{ delay: 0.15, type: 'just' }}
+                    onClick={() => {
+                        window.location.href = '/reg'
+                    }}>
+                    <button className='new-chat-btn'
+                        style={{ color: 'red' }}>
+                        Выйти(reg/log)
+                    </button>
+                </motion.div>
+            </div>
         </ motion.div >
     )
 }
