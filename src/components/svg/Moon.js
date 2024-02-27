@@ -1,14 +1,13 @@
 import React from 'react'
 import { motion } from "framer-motion"
 
-export default function Moon({ setTheme, showAll, divVariants }) {
 
+export default function Moon({ setTheme, showAll, divVariants }) {
     return (
         <motion.div
             variants={divVariants}
             initial='hidden'
-            animate={showAll ? 'visible' : 'hidden'}
-        >
+            animate={showAll ? 'visible' : 'hidden'}>
             <svg className='navigation-menu-tool' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 21" fill="none" onClick={setTheme}>
                 <path d="M6.28125 20H13.7231" strokeLinecap="round" strokeLinejoin="round" />
                 <path d="M3.49219 17.1084H16.5154" strokeLinecap="round" strokeLinejoin="round" />

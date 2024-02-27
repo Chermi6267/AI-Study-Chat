@@ -1,15 +1,16 @@
 import React, { useContext, useRef } from 'react'
 import { motion } from 'framer-motion'
 import Ava from '../svg/Ava'
-import { userMenuContext } from '../Main'
+import { UserMenuContext } from '../providers/UserMenuProvider'
 import { useClickOutside } from '../hooks/useClickOutside'
 import Phone from '../svg/Phone'
 import Email from '../svg/Email'
+import './userMenu.css'
 
 
 export default function UserMenu() {
 
-    const [isUserMenuOpen, setIsUserMenuOpen] = useContext(userMenuContext)
+    const [isUserMenuOpen, setIsUserMenuOpen] = useContext(UserMenuContext)
 
     const divVariants1 = {
         hidden: {
@@ -73,7 +74,7 @@ export default function UserMenu() {
                     </div>
                 </div>
             </motion.div>
-            <div className='new-chat-btn-container'>
+            <div className='user-menu-btn-container'>
                 <motion.div
                     style={{ width: '80%' }}
                     initial='hidden'
@@ -83,7 +84,7 @@ export default function UserMenu() {
                     onClick={() => {
                         window.location.href = '/reg'
                     }}>
-                    <button className='new-chat-btn'
+                    <button className='user-menu-btn'
                         style={{ color: 'red' }}>
                         Выйти(reg/log)
                     </button>

@@ -1,17 +1,18 @@
 import React, { useState, useRef, useEffect, useContext } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import Sun from './svg/Sun';
-import Moon from './svg/Moon';
-import Info from './svg/Info';
-import Chat from './svg/Chat';
-import Dots from './svg/Dots';
-import OrintationArrow from './svg/OrintationArrow';
-import User from './svg/User'
-import { ThemeContext } from './providers/ThemeProvider';
-import { OrintationContext } from './providers/OrintationProvider';
+import Sun from '../svg/Sun';
+import Moon from '../svg/Moon';
+import Info from '../svg/Info';
+import Chat from '../svg/Chat';
+import Dots from '../svg/Dots';
+import OrintationArrow from '../svg/OrintationArrow';
+import User from '../svg/User'
+import { ThemeContext } from '../providers/ThemeProvider';
+import { OrintationContext } from '../providers/OrintationProvider';
+import './navBar.css'
 
 
-export default function NavigationMenu2V({ messageNavbarHeight }) {
+export default function NavigationMenu({ messageNavbarHeight }) {
     const [showAll, setShowAll] = useState(false);
     const toggleVisibility = () => {
         setShowAll(!showAll);

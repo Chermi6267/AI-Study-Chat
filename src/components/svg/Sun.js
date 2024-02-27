@@ -1,8 +1,8 @@
 import React from 'react'
 import { motion } from "framer-motion"
 
-export default function Sun({ setTheme, showAll, divVariants }) {
 
+export default function Sun({ setTheme, showAll, divVariants }) {
     return (
         <motion.div
             variants={divVariants}

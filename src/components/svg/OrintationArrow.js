@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { motion } from 'framer-motion'
 
+
 export default function OrintationArrow({ showAll, divVariants, setNavBarIsRight, navBarOrintation }) {
     const [animate, setAnimate] = useState(false)
 

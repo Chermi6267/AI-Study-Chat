@@ -1,5 +1,6 @@
 import React from 'react'
 
+
 export default function Sber() {
     return (
         <svg xmlns="http://www.w3.org/2000/svg" className='icon' viewBox="0 0 40 40" fill="none">

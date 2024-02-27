@@ -1,6 +1,7 @@
 import React from 'react'
-import Camera from './svg/Camera'
-import Micro from './svg/Micro'
+import Camera from '../svg/Camera'
+import Micro from '../svg/Micro'
+import './input.css'
 
 
 export default function Input({ inputRef }) {

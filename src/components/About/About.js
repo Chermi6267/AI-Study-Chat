@@ -1,13 +1,14 @@
 import React, { useState } from 'react'
-import Header from './Header'
 import { FaReact } from "react-icons/fa";
 import { IoLogoHtml5 } from "react-icons/io5";
 import { IoLogoCss3 } from "react-icons/io5";
 import { FaNode } from "react-icons/fa6";
-import Sber from './svg/Sber';
+import Sber from '../svg/Sber';
 import { motion } from 'framer-motion'
 import { GiBackForth } from "react-icons/gi";
 import { FaRegSmileWink } from "react-icons/fa";
+import './about.css'
+
 
 export default function About(target) {
     const [showMe, setShowMe] = useState(false)
@@ -20,9 +21,9 @@ export default function About(target) {
     return (
         <div>
             <motion.div
-                style={{ position: 'absolute', x: window.innerWidth - 70, y: 30}}
+                style={{ position: 'absolute', x: window.innerWidth - 70, y: 30 }}
                 drag={true}
-                
+
                 dragConstraints={{ top: 3, left: 3, right: window.innerWidth - 46, bottom: window.innerHeight - 46 }}
                 onDragStart={dragEvent}
                 onDragEnd={dragEvent}>
@@ -33,9 +34,6 @@ export default function About(target) {
                     {dragMe ? <FaRegSmileWink /> : <GiBackForth />}
                 </button>
             </motion.div>
-            <div className='header-container'>
-                <Header isActive={true} target={'for-reg-log'} />
-            </div>
             <motion.div
                 className='about-me-container'
                 initial={{ opacity: 0 }}

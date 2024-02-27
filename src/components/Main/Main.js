@@ -1,24 +1,22 @@
-import React, { useRef, useState, useEffect, useMemo, useContext, createContext } from 'react'
-import NavigationMenu2V from './NavigationMenu2V'
-import UserMenu from './userMenu';
-import Messages from './messages/Messages';
-import Input from './Input'
-import { OrintationContext } from './providers/OrintationProvider';
-import Chats from './chats';
-import Cap from './userMenu/Cap';
-
-
-export const userMenuContext = createContext()
-export const chatMenuContext = createContext()
+import React, { useRef, useState, useEffect, useMemo, useContext } from 'react'
+import NavigationMenu from '../NavigationMenu/NavigationMenu'
+import UserMenu from '../userMenu/UserMenu';
+import Messages from '../messages/Messages';
+import Input from '../Input/Input';
+import { OrintationContext } from '../providers/OrintationProvider';
+import { UserMenuProvider } from '../providers/UserMenuProvider';
+import { ChatMenuProvider } from '../providers/ChatMenuProvider';
+import ChatsMenu from '../chatsMenu/ChatsMenu';
+import Cap from '../Cap/Cap';
+import './main.css'
 
 
 export default function Main() {
     const inputRef = useRef();
 
-    const [isUserMenuOpen, setIsUserMenuOpen] = useState(false)
-    const [isChatMenuOpen, setIsChatMenuOpen] = useState(false)
 
     const [navBarIsRight, setNavBarIsRight] = useContext(OrintationContext)
+
 
     const [messageNavbarHeight, setMessageNavbarHeight] = useState(0)
     useEffect(() => {
@@ -35,7 +33,7 @@ export default function Main() {
 
     const messagesComponent = useMemo(() => <Messages />, []);
     const navigationMenuComponent = useMemo(() => (
-        <NavigationMenu2V
+        <NavigationMenu
             messageNavbarHeight={messageNavbarHeight}
             navBarOrintation={navBarIsRight}
             inputRef={inputRef}
@@ -44,10 +42,10 @@ export default function Main() {
     ), [messageNavbarHeight, navBarIsRight, inputRef, setNavBarIsRight]);
 
     return (
-        <userMenuContext.Provider value={[isUserMenuOpen, setIsUserMenuOpen]}>
-            <chatMenuContext.Provider value={[isChatMenuOpen, setIsChatMenuOpen]}>
+        <UserMenuProvider>
+            <ChatMenuProvider>
                 <UserMenu />
-                <Chats />
+                <ChatsMenu />
                 <div className='main-page-container'>
                     <Cap />
                     <div className='message-navbar'
@@ -60,7 +58,7 @@ export default function Main() {
                     </div>
                     {<Input inputRef={inputRef} />}
                 </div>
-            </chatMenuContext.Provider >
-        </userMenuContext.Provider >
+            </ChatMenuProvider>
+        </UserMenuProvider>
     )
 }

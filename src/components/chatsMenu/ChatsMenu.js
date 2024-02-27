@@ -1,13 +1,14 @@
 import React, { useContext, useRef } from 'react'
-import { chatMenuContext } from '../Main'
+import { ChatMenuContext } from '../providers/ChatMenuProvider'
 import { useClickOutside } from '../hooks/useClickOutside'
 import { OrintationContext } from '../providers/OrintationProvider'
 import { motion } from 'framer-motion'
 import Chat from './Chat'
+import './chatsMenu.css'
 
 
-export default function Chats() {
-    const [isChatMenuOpen, setIsChatMenuOpen] = useContext(chatMenuContext)
+export default function ChatsMenu() {
+    const [isChatMenuOpen, setIsChatMenuOpen] = useContext(ChatMenuContext)
     const [navBarIsRight] = useContext(OrintationContext)
 
 

@@ -1,12 +1,12 @@
 import React, { useState, useContext } from 'react'
 import { motion } from "framer-motion"
-import { userMenuContext } from '../Main'
+import { UserMenuContext } from '../providers/UserMenuProvider'
 
 
 export default function User({ showAll, divVariants }) {
     const [animate, setAnimate] = useState(false)
 
-    const [isUserMenuOpen, setIsUserMenuOpen] = useContext(userMenuContext)
+    const [isUserMenuOpen, setIsUserMenuOpen] = useContext(UserMenuContext)
 
     const openUserMenu = () => {
         setAnimate(!animate);
@@ -40,7 +40,6 @@ export default function User({ showAll, divVariants }) {
             rotate: 270
         }
     }
-
 
     return (
         <motion.div

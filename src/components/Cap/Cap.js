@@ -1,12 +1,13 @@
 import React, { useContext } from 'react'
 import { motion } from 'framer-motion'
-import { userMenuContext } from '../Main'
-import { chatMenuContext } from '../Main'
+import { UserMenuContext } from '../providers/UserMenuProvider'
+import { ChatMenuContext } from '../providers/ChatMenuProvider'
+import './cap.css'
 
 
 export default function Cap() {
-    const [isUserMenuOpen] = useContext(userMenuContext)
-    const [isChatMenuOpen] = useContext(chatMenuContext)
+    const [isUserMenuOpen] = useContext(UserMenuContext)
+    const [isChatMenuOpen] = useContext(ChatMenuContext)
 
     const divVariants = {
         hidden: {

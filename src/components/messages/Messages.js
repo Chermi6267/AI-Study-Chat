@@ -1,5 +1,6 @@
 import React, { useRef, useEffect } from 'react'
 import MessageHandler from './MessageHandler';
+import './messages.css'
 
 
 export default function Messages() {

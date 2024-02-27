@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { motion } from "framer-motion"
 
+
 export default function Dots({ toggleVisibility, showAll, dotsRef, divVariants }) {
 
     const [animate, setAnimate] = useState(false)

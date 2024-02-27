@@ -1,9 +1,12 @@
 import React from 'react'
-import Logo from './svg/Logo'
+import Logo from '../svg/Logo'
 import { motion } from 'framer-motion'
+
 
 export default function Header({ isActive, target }) {
     const className = "header " + target
+
+
     return (
         <motion.div
             className={className}

@@ -1,5 +1,6 @@
 import React from 'react'
 
+
 export default function Camera() {
     return (
         <svg className='input-tool' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 22 22" fill="none">

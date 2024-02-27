@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { motion } from "framer-motion"
 
+
 export default function Info({ showAll, divVariants }) {
 
     const [animate, setAnimate] = useState(false)
