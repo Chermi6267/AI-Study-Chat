@@ -1,0 +1,106 @@
+/* ============ REG_LOG ============ */
+
+.submit-btn {
+    padding: 10px 30px;
+    border-radius: 50px;
+    background-color: var(--color1-dr-th);
+    border: none;
+    color: var(--text-dr-th);
+    position: relative;
+}
+
+.submit-btn::before {
+    content: '';
+    border-radius: 50px;
+    width: calc(100% + 6px);
+    height: calc(100% + 6px);
+    background: var(--gradient-dr-th-90deg);
+    position: absolute;
+    z-index: -1;
+    left: -3px;
+    top: -3px;
+    background-size: 200%;
+    animation: ln-bg-gr-animation2 2s ease infinite;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    align-content: center;
+    flex-wrap: nowrap;
+    flex-direction: row;
+    column-gap: 20px;
+}
+
+.reg-log-container {
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    width: 75%;
+}
+
+.reg-log-container label:first-child {
+    padding-left: 5%;
+}
+
+.reg-log-container label:last-child {
+    padding-right: 5%;
+}
+
+.reg-log-input {
+    height: 27.5px;
+    border: none;
+    padding: 0;
+    padding-left: 3%;
+    color: var(--text-dr-th);
+    background-color: var(--color1-dr-th);
+    border-radius: 10px;
+    margin: 2% 0;
+}
+
+.reg-log-input:focus {
+    outline: none;
+}
+
+.label-forget-password-container {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.header-container {
+    padding: clamp(25px, 6.7vw, 30px);
+    padding-bottom: 0;
+}
+
+.for-reg-log {
+    justify-content: center;
+}
+
+.logo-text {
+    font-size: clamp(17px, 5vw, 18px);
+}
+
+.log-reg-h1 {
+    display: flex;
+    justify-content: center;
+    font-size: 23px;
+    margin-bottom: 2%;
+}
+
+.log-reg-h2 {
+    font-size: 12px;
+    width: 70%;
+    margin: 5% 0%;
+}
+
+.log-reg-h2 a {
+    text-decoration: none;
+    color: var(--text-dr-th);
+}
+
+.form-container {
+    margin-top: 15%;
+    display: grid;
+    justify-items: center;
+}
