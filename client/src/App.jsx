@@ -10,9 +10,14 @@ import Registration from './components/regLog/Registration';
 import Login from './components/regLog/Login';
 import { ThemeProvider } from './components/providers/ThemeProvider';
 import { OrintationProvider } from './components/providers/OrintationProvider';
+import io from 'socket.io-client';
 
+const APIUrl = process.env.REACT_APP_API_URL;
+
+export const socket = io.connect(APIUrl)
 
 export default function App() {
+
   return (
     <ThemeProvider>
       <OrintationProvider>

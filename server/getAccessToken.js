@@ -19,13 +19,8 @@ async function getAccessToken(authToken) {
         data: 'scope=GIGACHAT_API_PERS'
     };
 
-    try {
-        const response = await axios(config);
-        return JSON.parse(JSON.stringify(response.data));
-
-    } catch (error) {
-        return error;
-    }
+    const response = await axios(config);
+    return response.data;
 }
 
 module.exports = { getAccessToken };
