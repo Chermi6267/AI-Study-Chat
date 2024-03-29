@@ -13,7 +13,9 @@ async function isAuthenticated(req, res, next) {
 
     try {
         const userData = await tokensService.validateAccessToken(token.split(' ')[1]);
-
+        if (!userData) {
+            return res.status(401).json({ message: 'The authentication token is incorrect' });
+        }
         req.user = userData;
 
         next();

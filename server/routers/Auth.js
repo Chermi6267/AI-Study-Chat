@@ -26,7 +26,7 @@ router.post('/login',
     controller.login)
 
 router.get('/all_users', isAuthenticated, controller.getAllUsers)
-router.get('/logout', isAuthenticated, controller.logout)
+router.get('/logout', controller.logout)
 router.post('/refreshToken', controller.refreshAccessToken)
 
 module.exports = router

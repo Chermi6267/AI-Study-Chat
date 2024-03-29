@@ -6,9 +6,26 @@ import { useClickOutside } from '../hooks/useClickOutside'
 import Phone from '../svg/Phone'
 import Email from '../svg/Email'
 import './userMenu.css'
+import { useAuth } from '../hooks/useAuth'
+import AuthServices from '../../services/authServices'
+import { useDispatch } from 'react-redux'
+import { removeUser } from '../../store/slices/userSlice'
 
 
 export default function UserMenu() {
+    const dispatch = useDispatch()
+    const handleLogout = (username, password) => {
+        AuthServices.logout(username, password)
+            .then((response) => {
+                dispatch(removeUser())
+                console.log(`signed out`)
+                localStorage.removeItem('token')
+                // window.location.href = '/'
+            })
+            .catch(error => {
+                console.log(error)
+            })
+    }
 
     const [isUserMenuOpen, setIsUserMenuOpen] = useContext(UserMenuContext)
 
@@ -40,10 +57,10 @@ export default function UserMenu() {
             opasity: 1
         },
     }
-
+    const { isAuth, id, username, email } = useAuth()
     const profInfo = {
-        userName: 'Victor Chermi',
-        userEmail: 'chermi6267@gmail.com',
+        userName: username,
+        userEmail: email,
         userPhone: '+79991730587'
     }
 
@@ -82,11 +99,11 @@ export default function UserMenu() {
                     animate={isUserMenuOpen ? 'visible' : 'hidden'}
                     transition={{ delay: 0.15, type: 'just' }}
                     onClick={() => {
-                        window.location.href = '/reg'
+                        handleLogout()
                     }}>
                     <button className='user-menu-btn'
                         style={{ color: 'red' }}>
-                        Выйти(reg/log)
+                        Выйти
                     </button>
                 </motion.div>
             </div>

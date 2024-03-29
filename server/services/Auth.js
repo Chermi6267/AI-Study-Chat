@@ -36,6 +36,9 @@ class authService {
                 data: {
                     message: 'User was successfully registered',
                     data: {
+                        'id': user.insertId,
+                        'username': username,
+                        'email': email,
                         'access_token': accessToken
                     }
                 }
@@ -80,6 +83,9 @@ class authService {
                 data: {
                     message: 'User was successfully logged in',
                     data: {
+                        'id': user[0][0]['id'],
+                        'username': user[0][0]['username'],
+                        'email': user[0][0]['email'],
                         'access_token': accessToken
                     }
                 }
@@ -111,7 +117,7 @@ class authService {
             }
             const userData = await tokensService.validateRefreshToken(refreshToken)
             if (!userData) {
-                return res.status(401).json({ message: 'Refresh token is incorrect' });
+                return { status: 401, data: { message: 'Refresh token is incorrect' } }
             }
 
             // Generating access token
@@ -120,6 +126,9 @@ class authService {
             return {
                 status: 200,
                 data: {
+                    'id': userData['id'],
+                    'username': userData['username'],
+                    'email': userData['email'],
                     'accessToken': accessToken
                 }
             }

@@ -11,7 +11,7 @@ class tokensService {
             username,
             email
         }
-        return jwt.sign(payload, process.env.JWT_ACCESS_SECRET, { expiresIn: '60m' })
+        return jwt.sign(payload, process.env.JWT_ACCESS_SECRET, { expiresIn: '15s' })
     }
 
 

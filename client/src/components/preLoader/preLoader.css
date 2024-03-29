@@ -1,0 +1,22 @@
+.preloader-container {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+}
+
+.preLoader-svg {
+    fill: var(--text-dr-th);
+    width: 20%;
+    animation: preLoader-animation 1s infinite;
+    margin-bottom: 30px;
+}
+
+.preLoader-text {
+    text-align: center;
+    font-size: larger;
+    margin-bottom: 15px;
+}

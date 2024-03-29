@@ -70,6 +70,7 @@ class authController {
     // Refresh access controller
     async refreshAccessToken(req, res) {
         try {
+
             const token = req.cookies['refreshToken']
             const data = await authService.refreshAccessToken(token)
 
@@ -80,7 +81,7 @@ class authController {
             res.status(400).json({ message: 'Refresh access token error' })
         }
     }
-    
+
 
     // Get all users controller
     async getAllUsers(req, res) {

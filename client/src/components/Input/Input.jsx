@@ -8,20 +8,20 @@ import { socket } from '../../App'
 export default function Input({ inputRef }) {
 
   const [inputValue, setInputValue] = useState('')
-  const handleEnterPress = (ev) => {
-    if (ev.key === 'Enter' && !ev.shiftKey) {
-      if (!!ev.target.value) {
-        ev.target.value = ''
-        socket.send(inputValue)
-      }
-    }
-  };
+  // const handleEnterPress = (ev) => {
+  //   if (ev.key === 'Enter' && !ev.shiftKey) {
+  //     if (!!ev.target.value) {
+  //       ev.target.value = ''
+  //       socket.send(inputValue)
+  //     }
+  //   }
+  // };
 
-  useEffect(() => {
-    socket.on('message', (data) => {
-      console.log('Получено сообщение:', JSON.parse(data)['data']['content']);
-    });
-  }, []);
+  // useEffect(() => {
+  //   socket.on('message', (data) => {
+  //     console.log('Получено сообщение:', JSON.parse(data)['data']['content']);
+  //   });
+  // }, []);
 
 
   return (
@@ -33,7 +33,7 @@ export default function Input({ inputRef }) {
           <input
             value={inputValue}
             onChange={(ev) => setInputValue(ev.target.value)}
-            onKeyDown={handleEnterPress}
+            // onKeyDown={handleEnterPress}
             className='main-input'
             placeholder='Сообщение'
             autoComplete='off'

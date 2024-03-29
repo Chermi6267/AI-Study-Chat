@@ -16,7 +16,6 @@ class authRepository {
         }
     }
 
-
     // Create user
     async createUser(username, email, hashPassword) {
         try {

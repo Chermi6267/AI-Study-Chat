@@ -9,26 +9,31 @@ import { ChatMenuProvider } from '../providers/ChatMenuProvider';
 import ChatsMenu from '../chatsMenu/ChatsMenu';
 import Cap from '../Cap/Cap';
 import './main.css'
+import api from '../../http';
+import { useAuth } from '../hooks/useAuth';
+import GetStarted from '../regLog/GetStarted';
+
 
 
 export default function Main() {
+    const { isAuth } = useAuth()
     const inputRef = useRef();
-
 
     const [navBarIsRight, setNavBarIsRight] = useContext(OrintationContext)
 
-
     const [messageNavbarHeight, setMessageNavbarHeight] = useState(0)
     useEffect(() => {
-        const resizeHandler = () => {
-            setMessageNavbarHeight(window.innerHeight - inputRef.current.clientHeight)
+        if (inputRef.current) {
+            const resizeHandler = () => {
+                setMessageNavbarHeight(window.innerHeight - inputRef.current.clientHeight)
+            }
+            window.addEventListener('resize', resizeHandler)
+            resizeHandler()
+            return () => {
+                window.removeEventListener('resize', resizeHandler)
+            }
         }
-        window.addEventListener('resize', resizeHandler)
-        resizeHandler()
-        return () => {
-            window.removeEventListener('resize', resizeHandler)
-        }
-    }, [inputRef])
+    }, [inputRef, isAuth])
 
 
     const messagesComponent = useMemo(() => <Messages />, []);
@@ -41,11 +46,42 @@ export default function Main() {
         />
     ), [messageNavbarHeight, navBarIsRight, inputRef, setNavBarIsRight]);
 
+
+    const test = () => {
+        try {
+            api.get('authentication/all_users')
+                .then((res) => {
+                    console.log('ХОЧУ ЮЗЕРОВ');
+                    console.log(res.data.data[0])
+                })
+                .catch(error => {
+                    window.location.href = '/login'
+                })
+        } catch (error) {
+            window.location.href = '/login'
+        }
+    }
+
+
+    if (!isAuth) {
+        return (
+            <UserMenuProvider>
+                <ChatMenuProvider>
+                    <GetStarted />
+                </ChatMenuProvider>
+            </UserMenuProvider>
+        )
+    }
+
+
     return (
         <UserMenuProvider>
             <ChatMenuProvider>
                 <UserMenu />
                 <ChatsMenu />
+                <button style={{ position: 'absolute', zIndex: 100, width: "80px", height: '50px', backgroundColor: 'var(--color1-dr-th)', right: 0 }} onClick={test}>
+                    testAPI
+                </button>
                 <div className='main-page-container'>
                     <Cap />
                     <div className='message-navbar'
