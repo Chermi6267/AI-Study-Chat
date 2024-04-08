@@ -33,7 +33,7 @@
 }
 
 .reg-log-container {
-    margin: 0 auto;
+    margin: 1% auto;
     display: flex;
     flex-direction: column;
     width: 75%;
@@ -48,7 +48,7 @@
 }
 
 .reg-log-input {
-    height: 27.5px;
+    height: 30px;
     border: none;
     padding: 0;
     padding-left: 3%;
@@ -142,6 +142,8 @@
 
 .dots {
     max-width: 38px;
+    max-height: 15px;
+    height: 15px;
     width: 38px;
     font-weight: 800;
 }

@@ -24,7 +24,7 @@ async function askAI(accessToken, messages, maxTokens) {
         headers: {
             'Content-Type': 'application/json',
             'Accept': 'application/json',
-            'Authorization': `Bearer ${accessToken}` // Maximum of toxins in one message
+            'Authorization': `Bearer ${accessToken}` // Access token
         },
         data: data
     };

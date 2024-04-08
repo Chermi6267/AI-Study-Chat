@@ -45,6 +45,7 @@ export default function Login() {
                 window.location.href = '/'
             })
             .catch(error => {
+                setLoading(false)
                 console.log(error.response.data['message'])
             })
     }
@@ -66,7 +67,7 @@ export default function Login() {
                         return '.';
                 }
             });
-        }, 300); // Задержка между изменениями точек в миллисекундах (300ms в данном случае)
+        }, 300);
 
         return () => clearInterval(interval);
     }, []);
@@ -82,7 +83,7 @@ export default function Login() {
 
                 <div className='reg-log-container'>
                     <input autoComplete="off" name='name'
-                        value={username} onChange={(e) => { setUsername(e.target.value) }}
+                        onChange={(e) => { setUsername(e.target.value) }}
                         type='text'
                         className='reg-log-input' id='name' />
                     <div className='label-forget-password-container'>
@@ -92,7 +93,7 @@ export default function Login() {
 
                 <div className='reg-log-container'>
                     <input autoComplete="off" name='password'
-                        value={password} onChange={(e) => { setPassword(e.target.value) }}
+                        onChange={(e) => { setPassword(e.target.value) }}
                         type='password'
                         className='reg-log-input' id='password' />
 

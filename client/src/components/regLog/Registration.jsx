@@ -53,6 +53,10 @@ export default function Registration() {
                 localStorage.setItem('token', response.data.data['access_token'])
                 window.location.href = '/'
             })
+            .catch(error => {
+                setLoading(false)
+                console.log(error.response.data['message'])
+            })
     }
 
     const [loading, setLoading] = useState(false)
@@ -89,7 +93,7 @@ export default function Registration() {
 
                 <div className='reg-log-container'>
                     <input autoComplete="off" name='name'
-                        value={username} onChange={(e) => { setUsername(e.target.value) }}
+                        onChange={(e) => { setUsername(e.target.value) }}
                         type='text'
                         className='reg-log-input' id='name' />
                     <div className='label-forget-password-container'>
@@ -99,7 +103,7 @@ export default function Registration() {
 
                 <div className='reg-log-container'>
                     <input autoComplete="off" name='email'
-                        value={email} onChange={(e) => { setEmail(e.target.value) }}
+                        onChange={(e) => { setEmail(e.target.value) }}
                         type='text'
                         className='reg-log-input' id='email' />
                     <div className='label-forget-password-container'>
@@ -109,7 +113,7 @@ export default function Registration() {
 
                 <div className='reg-log-container'>
                     <input autoComplete="off" name='password1'
-                        value={password1} onChange={(e) => { setPassword1(e.target.value) }}
+                        onChange={(e) => { setPassword1(e.target.value) }}
                         type='password'
                         className='reg-log-input' id='password1' />
 
@@ -121,7 +125,7 @@ export default function Registration() {
 
                 <div className='reg-log-container'>
                     <input autoComplete="off" name='password2'
-                        value={password2} onChange={(e) => { setPassword2(e.target.value) }}
+                        onChange={(e) => { setPassword2(e.target.value) }}
                         type='password'
                         className='reg-log-input' id='password2' />
                     <div className='label-forget-password-container'>

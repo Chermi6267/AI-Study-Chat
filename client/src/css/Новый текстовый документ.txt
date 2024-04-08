@@ -1,0 +1,52 @@
+    // async function handleMarkerSubmit(event) {
+    //     event.preventDefault();
+    //     const formData = new FormData(event.target);
+    //     const inputLocation = formData.get('location');
+
+    //     const res = await fetch(
+    //         'http://localhost:5000/api/geocode?' +
+    //         new URLSearchParams({ location: inputLocation }).toString()
+    //     );
+    //     if (!res.ok) {
+    //         const err = await res.text();
+    //         alert(`Something went wrong.\n${err}`);
+    //     } else {
+    //         const data = await res.json();
+    //         let newLocation = {
+    //             address: data.location,
+    //             lat: data.coordinates.latitude,
+    //             long: data.coordinates.longitude,
+    //         };
+    //         setLocationMarkers((locations) => [...locations, newLocation]);
+    //     }
+    // }
+
+    // async function handleRouteSubmit(event) {
+    //     event.preventDefault();
+    //     // Reset previous waypoints
+    //     if (waypoints) {
+    //         setWaypoints();
+    //     }
+    //     // Hide the form
+    //     setFormView(false);
+
+    //     const formData = new FormData(event.target);
+    //     const locations = formData.getAll('location');
+    //     console.log(locations);
+    //     const res = await fetch('http://localhost:5000/api/route', {
+    //         method: 'POST',
+    //         headers: {
+    //             Accept: 'application/json',
+    //             'Content-Type': 'application/json;charset=UTF-8',
+    //         },
+    //         body: JSON.stringify({ locations }),
+    //     });
+    //     if (!res.ok) {
+    //         const err = await res.text();
+    //         alert(`Something went wrong.\n${err}`);
+    //     } else {
+    //         const data = await res.json();
+
+    //         setWaypoints(data.waypoints);
+    //     }
+    // }

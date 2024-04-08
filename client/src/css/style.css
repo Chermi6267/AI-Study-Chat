@@ -13,6 +13,8 @@ body {
 }
 
 body.dark {
+    font-family: 'Sofia Sans', sans-serif;
+    font-size: clamp(14px, 5vw, 15px);
     --gradient-dr-th-90deg: linear-gradient(90deg, #FB7185 0%, #B94FEF 45%, #6365F1 100%);
     --gradient-dr-th-180deg: linear-gradient(180deg, #FB7185 0%, #B94FEF 45%, #6365F1 100%);
     --backgr-color-dr-th: #2D2C3A;
