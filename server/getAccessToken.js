@@ -1,26 +1,25 @@
-const axios = require('axios');
-const { v4: uuidv4 } = require('uuid');
-
+const axios = require("axios");
+const { v4: uuidv4 } = require("uuid");
 
 // Function for obtaining an access token from the Giga Chat API
 async function getAccessToken(authToken) {
-    process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0' // Disable SSL Certificate verification
+  process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0"; // Disable SSL Certificate verification
 
-    let config = {
-        method: 'post',
-        maxBodyLength: Infinity,
-        url: 'https://ngw.devices.sberbank.ru:9443/api/v2/oauth',
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-            'Accept': 'application/json',
-            'RqUID': `${uuidv4()}`, // Creating a UUID (36 characters)
-            'Authorization': `Basic ${authToken}` // credentials (98 symbols + ==)
-        },
-        data: 'scope=GIGACHAT_API_PERS'
-    };
+  let config = {
+    method: "post",
+    maxBodyLength: Infinity,
+    url: "https://ngw.devices.sberbank.ru:9443/api/v2/oauth",
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded",
+      Accept: "application/json",
+      RqUID: `${uuidv4()}`, // Creating a UUID (36 characters)
+      Authorization: `Basic ${authToken}`, // credentials (98 symbols + ==)
+    },
+    data: "scope=GIGACHAT_API_PERS",
+  };
 
-    const response = await axios(config);
-    return response.data;
+  const response = await axios(config);
+  return response.data;
 }
 
 module.exports = { getAccessToken };

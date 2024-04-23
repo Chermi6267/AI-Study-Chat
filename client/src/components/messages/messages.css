@@ -18,6 +18,7 @@
     row-gap: 3%;
     padding-top: 5%;
     display: flex;
+    min-width: 90%;
 }
 
 .messages-container> :last-child {
@@ -43,7 +44,7 @@
     padding: 3% 5%;
     background-color: var(--color2-dr-th);
     align-items: flex-end;
-    width: 70%;
+    max-width: 75%;
 }
 
 .bot-message-container p {
@@ -60,7 +61,7 @@
 
 .bot-chat-arrow {
     position: absolute;
-    bottom: 0;
+    bottom: auto;
     left: -8px;
     fill: var(--color2-dr-th);
     width: 9px;

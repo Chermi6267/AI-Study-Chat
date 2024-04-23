@@ -1,3 +1,6 @@
 node_modules
 .env
 plan.docx
+eng.traineddata
+rus.traineddata
+server/public

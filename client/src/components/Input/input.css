@@ -11,6 +11,7 @@
     padding: 3%;
     padding-top: 1%;
     margin: 0 auto;
+    position: relative;
 }
 
 .inputbox {
@@ -60,6 +61,7 @@
     width: 65%;
     border: none;
     padding-left: clamp(20px, 7vw, 30px);
+    color: var(--text-dr-th)
 }
 
 .main-input:focus {
@@ -90,4 +92,9 @@
 
 .input-tool {
     stroke: var(--text-dr-th);
+}
+
+.submit-svg {
+    width: 20px;
+    height: auto;
 }
