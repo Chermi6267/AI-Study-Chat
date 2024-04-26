@@ -153,7 +153,9 @@ export default function BotMessage({ element, setMessageScrollHeight }) {
     return () => clearInterval(interval);
   }, [dots]);
 
-  const test = "http://localhost:5555/chat/images/" + element.img_path;
+  const test =
+    process.env.REACT_APP_API_URL + "/chat/images/" + element.img_path;
+
   return (
     <>
       <div className="bot-message-wrapper">

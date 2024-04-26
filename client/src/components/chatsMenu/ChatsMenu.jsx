@@ -21,6 +21,7 @@ export default function ChatsMenu() {
   useEffect(() => {
     ChatService.chatList()
       .then((res) => {
+        console.log(res)
         setChatsData(res.data);
         setLoading(false);
       })

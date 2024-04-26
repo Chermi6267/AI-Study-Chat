@@ -95,6 +95,18 @@
     margin-bottom: 10%;
 }
 
+.chat-container-text {
+    max-height: 35px;
+    text-wrap: nowrap;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    max-width: 95%;
+}
+
+.chat-container-text::-webkit-scrollbar {
+    display: none;
+}
+
 .chat-container:last-child {
     margin-bottom: 0;
 }

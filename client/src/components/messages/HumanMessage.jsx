@@ -5,7 +5,7 @@ export default function HumanMessage({ element, setMessageScrollHeight }) {
   const test =
     element.img_path && element.img_path.startsWith("blob")
       ? element.img_path
-      : `http://localhost:5555/chat/images/${element.img_path}`;
+      : `${process.env.REACT_APP_API_URL}/chat/images/${element.img_path}`;
 
   return (
     <div className="human-message-wrapper">

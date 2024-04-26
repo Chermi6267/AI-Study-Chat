@@ -27,7 +27,8 @@ class ChatService {
     try {
       // Checking if there is a chat with certain chatID
       if (!JSON.parse(chatID)) {
-        const title = textForUser.slice(0, 50);
+        const title =
+          textForUser.slice(0, 50) + (textForUser.length > 50 ? "... " : "");
         const chat = await ChatRepository.createChat(userID, title);
         chatID = chat.insertId;
       }

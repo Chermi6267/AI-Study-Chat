@@ -16,7 +16,7 @@ export default function Chat({ element }) {
         setIsChatMenuOpen(false);
       }}
     >
-      <h1>{element.title}</h1>
+      <h1 className="chat-container-text">{element.title}</h1>
     </motion.li>
   );
 }

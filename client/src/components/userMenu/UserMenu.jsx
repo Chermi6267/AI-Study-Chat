@@ -10,16 +10,18 @@ import { useAuth } from "../hooks/useAuth";
 import AuthServices from "../../services/authServices";
 import { useDispatch } from "react-redux";
 import { removeUser } from "../../store/slices/userSlice";
+import { SelectedChatContext } from "../providers/SelectedChatProvider";
 
 export default function UserMenu() {
+  const [selectedChat, selectChat] = useContext(SelectedChatContext);
   const dispatch = useDispatch();
   const handleLogout = (username, password) => {
+    selectChat(false);
     AuthServices.logout(username, password)
       .then((response) => {
         dispatch(removeUser());
         console.log(`signed out`);
         localStorage.removeItem("token");
-        // window.location.href = '/'
       })
       .catch((error) => {
         console.log(error);
