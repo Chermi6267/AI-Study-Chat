@@ -1,7 +1,13 @@
 import React from "react";
 import Header from "./Header";
+import { useNavigate } from "react-router-dom";
 
 export default function GetStarted() {
+  const navigate = useNavigate();
+  const redirect = (url) => {
+    navigate(url);
+  };
+
   return (
     <div className="get-started-wrapper">
       <div className="header-container">
@@ -13,7 +19,7 @@ export default function GetStarted() {
           <button
             className="log-reg-btn"
             onClick={() => {
-              window.location.href = "/login";
+              redirect("/login");
             }}
           >
             Войти
@@ -21,17 +27,32 @@ export default function GetStarted() {
           <button
             className="log-reg-btn"
             onClick={() => {
-              window.location.href = "/reg";
+              redirect("/reg");
             }}
           >
             Зарегистрироваться
           </button>
         </div>
       </div>
-      <div style={{ height: "10%", textAlign: "center" }}>
-        30.03.2024<br></br>
-        &copy; AI Study Chat
-      </div>
+      <footer
+        style={{
+          height: "10%",
+          width: "100vw",
+          textAlign: "center",
+          paddingBottom: 15,
+          lineHeight: "normal",
+          color: "var(--text-dr-th)",
+        }}
+      >
+        05.06.2024<br></br>
+        &copy; AI Study Chat<br></br>
+        <a
+          style={{ color: "var(--text-dr-th)" }}
+          href="https://t.me/chermi6267"
+        >
+          @chermi6267
+        </a>
+      </footer>
     </div>
   );
 }

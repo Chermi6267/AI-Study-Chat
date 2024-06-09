@@ -4,6 +4,12 @@ const axios = require("axios");
 async function askAI(accessToken, messages, maxTokens) {
   process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0"; // Disable SSL Certificate verification
 
+  messages.unshift({
+    role: "system",
+    content:
+      "Ты бот созданный помогать людям в решении задач, твоя задача давать точные и веселые ответы. Ты работаешь с прерывистыми, неполными предложения и заданиями, так что тебе нужно дополнять задания и решать их",
+  });
+
   let data = JSON.stringify({
     model: "GigaChat:latest",
     messages: messages, // Message list(roles: system, user, assistant)

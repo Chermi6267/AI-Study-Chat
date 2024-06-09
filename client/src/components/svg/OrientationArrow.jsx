@@ -1,15 +1,15 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 
-export default function OrintationArrow({
+export default function OrientationArrow({
   showAll,
   divVariants,
   setNavBarIsRight,
-  navBarOrintation,
+  navBarOrientation,
 }) {
   const [animate, setAnimate] = useState(false);
 
-  const changeOrintation = () => {
+  const changeOrientation = () => {
     setAnimate(!animate);
     setTimeout(() => {
       setNavBarIsRight();
@@ -19,10 +19,10 @@ export default function OrintationArrow({
 
   const svgVariants = {
     hidden: {
-      transform: navBarOrintation ? "scaleX(-1)" : "scaleX(1)",
+      transform: navBarOrientation ? "scaleX(-1)" : "scaleX(1)",
     },
     visible: {
-      transform: navBarOrintation ? "scaleX(1)" : "scaleX(-1)",
+      transform: navBarOrientation ? "scaleX(1)" : "scaleX(-1)",
     },
   };
 
@@ -36,7 +36,7 @@ export default function OrintationArrow({
         variants={svgVariants}
         initial="hidden"
         animate={animate ? "visible" : "hidden"}
-        onClick={changeOrintation}
+        onClick={changeOrientation}
         className="navigation-menu-tool"
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 24 24"

@@ -1,28 +1,10 @@
-import React, { useRef, useEffect, useState, useContext } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import MessageHandler from "./MessageHandler";
 import "./messages.css";
-import ChatService from "../../services/chatServices";
-import { SelectedChatContext } from "../providers/SelectedChatProvider";
-import { useAuth } from "../hooks/useAuth";
 import PreLoader from "../svg/PreLoader";
 
-export default function Messages({ messages, setMessages }) {
-  const [selectedChat] = useContext(SelectedChatContext);
-  const { id } = useAuth();
-  const [loading, setLoading] = useState(true);
+export default function Messages({ messages, loading, messagesError }) {
   const [messageScrollHeight, setMessageScrollHeight] = useState(0);
-
-  useEffect(() => {
-    setLoading(true);
-    ChatService.chatMessages(selectedChat, id)
-      .then((res) => {
-        setMessages(res.data);
-        setLoading(false);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, [selectedChat, id]);
 
   const messageRef = useRef(null);
   useEffect(() => {
@@ -40,7 +22,7 @@ export default function Messages({ messages, setMessages }) {
     <div ref={messageRef} className="messages-wrapper">
       <div className="messages-container">
         {!loading ? (
-          messages.length === 0 ? (
+          messagesError ? (
             <h1
               style={{
                 position: "absolute",
@@ -48,6 +30,22 @@ export default function Messages({ messages, setMessages }) {
                 top: "50%",
                 lineHeight: "2.5vh",
                 width: "50vw",
+                color: "tomato",
+                textAlign: "center",
+                transform: "translateX: -50% translateY: -50%",
+              }}
+            >
+              Бля, что-то пошло не так (●'◡'●)
+            </h1>
+          ) : messages.length === 0 ? (
+            <h1
+              style={{
+                position: "absolute",
+                left: "20%",
+                top: "50%",
+                lineHeight: "2.5vh",
+                width: "50vw",
+                textAlign: "center",
                 transform: "translateX: -50% translateY: -50%",
               }}
             >

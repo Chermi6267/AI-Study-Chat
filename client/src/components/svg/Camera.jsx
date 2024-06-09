@@ -9,7 +9,7 @@ export default function Camera({ file }) {
       fill="none"
     >
       <path
-        style={file ? { fill: "red" } : {}}
+        style={file ? { fill: "var(--text-dr-th)" } : {}}
         d="M11 15C13.2091 15 15 13.2091 15 11C15 8.79086 13.2091 7 11 7C8.79086 7 7 8.79086 7 11C7 13.2091 8.79086 15 11 15Z"
         strokeWidth="2"
       />

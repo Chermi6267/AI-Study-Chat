@@ -4,14 +4,21 @@ import "./regLog.css";
 import AuthServices from "../../services/authServices";
 import { useDispatch } from "react-redux";
 import { setUser } from "../../store/slices/userSlice";
+import { useNavigate } from "react-router-dom";
 
 export default function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [errors, setErrors] = useState("");
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
 
   const [isPassword, setIsPassword] = useState(false);
+
+  const navigate = useNavigate();
+  const redirect = (url) => {
+    navigate(url);
+  };
 
   useEffect(() => {
     const password =
@@ -29,6 +36,24 @@ export default function Login() {
     }
   }, [isPassword]);
 
+  const usernameChangeHandler = (e) => {
+    setUsername(e.target.value);
+    if (e.target.value === "") {
+      document.querySelector("#name").classList.add("error");
+    } else {
+      document.querySelector("#name").classList.remove("error");
+    }
+  };
+
+  const passwordChangeHandler = (e) => {
+    setPassword(e.target.value);
+    if (e.target.value === "") {
+      document.querySelector("#password").classList.add("error");
+    } else {
+      document.querySelector("#password").classList.remove("error");
+    }
+  };
+
   const handleLogin = (username, password) => {
     setLoading(true);
     AuthServices.login(username, password)
@@ -42,13 +67,19 @@ export default function Login() {
             username: response.data.data["username"],
             email: response.data.data["email"],
             token: response.data.data["access_token"],
+            phone: response.data.data["phone"],
           })
         );
         console.log(`${response.data.data["username"]} signed in`);
         localStorage.setItem("token", response.data.data["access_token"]);
-        window.location.href = "/";
+        redirect("/");
       })
       .catch((error) => {
+        if (!!error.response) {
+          setErrors(error.response["data"]["message"]);
+        } else {
+          setErrors("Что-то не так с сервером");
+        }
         setLoading(false);
         console.log(error);
       });
@@ -89,9 +120,7 @@ export default function Login() {
           <input
             autoComplete="off"
             name="name"
-            onChange={(e) => {
-              setUsername(e.target.value);
-            }}
+            onChange={(e) => usernameChangeHandler(e)}
             type="text"
             className="reg-log-input"
             id="name"
@@ -105,9 +134,7 @@ export default function Login() {
           <input
             autoComplete="off"
             name="password"
-            onChange={(e) => {
-              setPassword(e.target.value);
-            }}
+            onChange={(e) => passwordChangeHandler(e)}
             type="password"
             className="reg-log-input"
             id="password"
@@ -120,9 +147,10 @@ export default function Login() {
             >
               Показать пароль
             </label>
-            <label>Забыли пароль?</label>
           </div>
         </div>
+
+        {errors !== "" ? <h2 className="log-reg-error">{errors}</h2> : null}
 
         <h2 className="log-reg-h2">
           Если у вас нет аккаунта AI Study Chat,{" "}

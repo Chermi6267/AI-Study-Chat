@@ -1,22 +1,36 @@
 const mysql = require("mysql2");
 
-const connection = mysql.createConnection({
+// Создаем пул соединений
+const connection = mysql.createPool({
+  connectionLimit: 10, // Максимальное количество соединений
   host: process.env.DB_HOST,
   user: process.env.DB_USER,
   database: process.env.DB_NAME,
   password: process.env.DB_PASSWORD,
 });
 
-connection.connect(function (err) {
+// Проверка соединения
+connection.getConnection((err, connection1) => {
   if (err) {
-    if (err.message) {
-      return console.error("ERROR: " + err.message);
+    console.error("Ошибка при подключении к базе данных:", err);
+    if (err.code === "PROTOCOL_CONNECTION_LOST") {
+      console.error("Соединение с базой данных потеряно, переподключение...");
+      // Переподключение
+      connection = mysql.createPool({
+        connectionLimit: 10,
+        host: process.env.DB_HOST,
+        user: process.env.DB_USER,
+        database: process.env.DB_NAME,
+        password: process.env.DB_PASSWORD,
+      });
+    } else {
+      throw err;
     }
-    return console.log(`DB ${process.env.DB_NAME} is not running`);
-  } else {
-    console.log(
-      `The connection to ${process.env.DB_NAME} was successfully established by ${process.env.DB_USER}`
-    );
+  }
+
+  if (connection1) {
+    connection1.release();
+    console.log("Подключение к базе данных успешно установлено");
   }
 });
 
@@ -25,7 +39,8 @@ connection.query(
         id INT PRIMARY KEY AUTO_INCREMENT,
         username VARCHAR(255) NOT NULL UNIQUE,
         email VARCHAR(255) NOT NULL,
-        password VARCHAR(999) NOT NULL
+        password VARCHAR(999) NOT NULL,
+        phone VARCHAR(20) NULL
     )`
 );
 

@@ -1,6 +1,5 @@
 import React, { useRef, useState, useContext } from "react";
 import Camera from "../svg/Camera";
-import Micro from "../svg/Micro";
 import "./input.css";
 import Submit from "../svg/Submit";
 import ChatService from "../../services/chatServices";
@@ -9,13 +8,23 @@ import { IMGMenuContext } from "../providers/IMGMenuProvider";
 import IMGMenu from "../IMGMenu/IMGMenu";
 import { v4 as uuidv4 } from "uuid";
 
-export default function Input({ inputRef, messages, setMessages }) {
+export default function Input({
+  inputContRef,
+  messages,
+  setMessages,
+  setChatsMenuTrigger,
+  messagesError,
+}) {
+  // References to DOM elements and component states
+  const inputRef = useRef(null);
   const [inputValue, setInputValue] = useState("");
   const [isIMGMenuOpen, setIsIMGMenuOpen] = useContext(IMGMenuContext);
   const fileInputRef = useRef(null);
   const [file, setFile] = useState();
   const [selectedChat, selectChat] = useContext(SelectedChatContext);
+  const [loading, setLoading] = useState(false);
 
+  // Preloader object template
   const preLoader = {
     id: "preLoader",
     img_path: "",
@@ -23,13 +32,16 @@ export default function Input({ inputRef, messages, setMessages }) {
     type: "preloader",
   };
 
+  // Handle file input change
   const handleChange = (event) => {
     setFile(event.target.files[0]);
+    event.target.value = null; // Reset the input value to allow same file selection
   };
 
+  // Handle text message submission
   const handleSubmitText = async () => {
     if (inputValue === "") {
-      console.log("НЕТ INPUT VALUE");
+      console.log("NO INPUT VALUE");
       return;
     }
 
@@ -40,29 +52,47 @@ export default function Input({ inputRef, messages, setMessages }) {
       img_path: "",
     };
 
+    // Temporarily set messages with the new message and preloader
     setMessages([...messages, element, preLoader]);
 
-    try {
-      await ChatService.sendText(selectedChat, inputValue).then((res) => {
+    // Send text message via ChatService
+    await ChatService.sendText(selectedChat, inputValue)
+      .then((res) => {
         console.log(res.data);
         if (res.data["chat_id"] === undefined) {
           selectChat(false);
         } else {
+          if (!selectedChat) {
+            setChatsMenuTrigger(true);
+          }
           selectChat(res.data["chat_id"]);
         }
         setMessages([...messages, element, res.data]);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.log(error);
+        const errorElement = {
+          id: id,
+          type: "assistant",
+          text_for_user:
+            "<p style='color: rgb(255, 66, 32)'>Что-то пошло не так!</p>",
+          img_path: "",
+        };
+        setMessages([...messages, element, errorElement]);
+        setFile();
+        setLoading(false);
       });
-    } catch (error) {
-      console.log(error);
-    }
   };
 
+  // Handle image upload button click
   const imgUploadHandler = () => {
     if (fileInputRef && fileInputRef.current) {
       fileInputRef.current.click();
     }
   };
 
+  // Handle image message submission
   const handleSubmitIMG = async () => {
     const id = uuidv4();
     const element = {
@@ -73,8 +103,8 @@ export default function Input({ inputRef, messages, setMessages }) {
 
     setMessages([...messages, element, preLoader]);
 
-    try {
-      await ChatService.sendIMG(file, inputValue, selectedChat).then((res) => {
+    await ChatService.sendIMG(file, inputValue, selectedChat)
+      .then((res) => {
         console.log(res);
         if (res.data["chat_id"] === undefined) {
           selectChat(false);
@@ -83,33 +113,58 @@ export default function Input({ inputRef, messages, setMessages }) {
         }
         setMessages([...messages, element, res.data]);
         setFile();
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.log(error);
+        const errorElement = {
+          id: id,
+          type: "assistant",
+          text_for_user:
+            "<p style='color: rgb(255, 66, 32)'>Что-то пошло не так!</p>",
+          img_path: "",
+        };
+        setMessages([...messages, element, errorElement]);
+        setFile();
+        setLoading(false);
       });
-    } catch (error) {
-      console.error(error);
-    }
   };
 
+  // Handle form submission
   const handleSubmit = (e) => {
     e.preventDefault();
 
     if (!file && inputValue === "") {
-      console.log("ПОШЁЛ НАХУЙ");
       return;
     }
 
-    if (file) {
-      handleSubmitIMG();
-      setInputValue("");
+    if (messagesError) {
+      return;
     } else {
-      handleSubmitText();
-      setInputValue("");
+      setLoading(true);
+      if (file) {
+        handleSubmitIMG();
+        setInputValue("");
+        setFile();
+        if (inputRef && inputRef.current) {
+          inputRef.current.innerText = "";
+        }
+      } else {
+        handleSubmitText();
+        setInputValue("");
+
+        if (inputRef && inputRef.current) {
+          inputRef.current.innerText = "";
+        }
+      }
     }
   };
 
+  // Render the input component
   return (
-    <div className="input-wrapper" ref={inputRef}>
+    <div className="input-wrapper" ref={inputContRef}>
       <IMGMenu imgUploadHandler={() => imgUploadHandler()} file={file} />
-      <div className="inputbox">
+      <div className={"inputbox"}>
         <div className="input-container">
           <input
             type="file"
@@ -120,16 +175,19 @@ export default function Input({ inputRef, messages, setMessages }) {
             id="file"
             hidden
           />
-          <input
-            value={inputValue}
-            onChange={(ev) => setInputValue(ev.target.value)}
-            className="main-input"
-            placeholder="Сообщение"
+
+          <div
+            ref={inputRef}
+            className="new-input"
+            contentEditable
             autoComplete="off"
+            placeholder="Сообщение"
+            onInput={(ev) => {
+              setInputValue(ev.target.innerText);
+            }}
           />
-        </div>
-        <div className="tools-container">
-          <>
+
+          <div className="tools-container">
             <button
               className="input-tool-btn"
               onClick={() => {
@@ -138,15 +196,23 @@ export default function Input({ inputRef, messages, setMessages }) {
             >
               <Camera file={file} />
             </button>
-            <button className="input-tool-btn">
-              <Micro />
-            </button>
-          </>
-          <>
-            <button className="input-tool-btn" onClick={(e) => handleSubmit(e)}>
+
+            <button
+              style={
+                (!file && inputValue === "") || loading
+                  ? {
+                      opacity: 0.5,
+                      pointerEvents: "none",
+                      userSelect: "none",
+                    }
+                  : {}
+              }
+              className="input-tool-btn"
+              onClick={(e) => handleSubmit(e)}
+            >
               <Submit />
             </button>
-          </>
+          </div>
         </div>
       </div>
     </div>

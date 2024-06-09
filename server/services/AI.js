@@ -2,7 +2,7 @@ const dotenv = require("dotenv").config({ path: "../.env" });
 const getAccessToken = require("../getAccessToken.js").getAccessToken;
 const askAI = require("../askAI.js").askAI;
 const getIMGFromAI = require("../getIMGFromAI.js").getIMGFromAI;
-const Tesseract = require("tesseract.js");
+const { ocrSpace } = require("ocr-space-api-wrapper");
 
 class AIService {
   async askAI(messages, accessToken) {
@@ -20,7 +20,7 @@ class AIService {
         const updatedResult = await askAI(
           accessToken["access_token"],
           messages,
-          10000
+          1000
         );
 
         return updatedResult["choices"][0]["message"];
@@ -53,11 +53,12 @@ class AIService {
 
   async recognizeText(imagePath) {
     try {
-      const {
-        data: { text },
-      } = await Tesseract.recognize(imagePath, "rus+eng");
+      const res2 = await ocrSpace(imagePath, {
+        apiKey: `<${process.env.OCR_SPACE_API_KEY}>`,
+        language: "rus",
+      });
 
-      return text;
+      return res2["ParsedResults"][0]["ParsedText"];
     } catch (error) {
       console.error(error);
     }

@@ -4,15 +4,58 @@ import "./regLog.css";
 import AuthServices from "../../services/authServices";
 import { useDispatch } from "react-redux";
 import { setUser } from "../../store/slices/userSlice";
+import { useNavigate } from "react-router-dom";
 
 export default function Registration() {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password1, setPassword1] = useState("");
   const [password2, setPassword2] = useState("");
+  const [errors, setErrors] = useState("");
   const dispatch = useDispatch();
 
   const [isPassword, setIsPassword] = useState(false);
+
+  const navigate = useNavigate();
+  const redirect = (url) => {
+    navigate(url);
+  };
+
+  const usernameChangeHandler = (e) => {
+    setUsername(e.target.value);
+    if (e.target.value === "") {
+      document.querySelector("#name").classList.add("error");
+    } else {
+      document.querySelector("#name").classList.remove("error");
+    }
+  };
+
+  const emailChangeHandler = (e) => {
+    setEmail(e.target.value);
+    if (e.target.value === "") {
+      document.querySelector("#email").classList.add("error");
+    } else {
+      document.querySelector("#email").classList.remove("error");
+    }
+  };
+
+  const password1ChangeHandler = (e) => {
+    setPassword1(e.target.value);
+    if (e.target.value === "") {
+      document.querySelector("#password1").classList.add("error");
+    } else {
+      document.querySelector("#password1").classList.remove("error");
+    }
+  };
+
+  const password2ChangeHandler = (e) => {
+    setPassword2(e.target.value);
+    if (e.target.value === "") {
+      document.querySelector("#password2").classList.add("error");
+    } else {
+      document.querySelector("#password2").classList.remove("error");
+    }
+  };
 
   useEffect(() => {
     const password =
@@ -33,7 +76,7 @@ export default function Registration() {
   const handleRegister = (username, email, password1, password2) => {
     setLoading(true);
     if (password1 !== password2) {
-      console.log("ПРОВЕРЬ ПАРОЛИ, ДЕБИЛ");
+      document.querySelector("#password2").classList.add("error");
       setLoading(false);
       return;
     }
@@ -50,15 +93,21 @@ export default function Registration() {
             username: response.data.data["username"],
             email: response.data.data["email"],
             token: response.data.data["access_token"],
+            phone: response.data.data["phone"],
           })
         );
         console.log(`${response.data.data["username"]} signed up`);
         localStorage.setItem("token", response.data.data["access_token"]);
-        window.location.href = "/";
+        redirect("/");
       })
       .catch((error) => {
+        if (!!error.response) {
+          setErrors(error.response["data"]["message"]);
+        } else {
+          setErrors("Что-то не так с сервером");
+        }
         setLoading(false);
-        console.log(error.response.data["message"]);
+        console.log(error);
       });
   };
 
@@ -81,7 +130,7 @@ export default function Registration() {
             return ".";
         }
       });
-    }, 300); // Задержка между изменениями точек в миллисекундах (300ms в данном случае)
+    }, 300);
 
     return () => clearInterval(interval);
   }, []);
@@ -98,9 +147,7 @@ export default function Registration() {
           <input
             autoComplete="off"
             name="name"
-            onChange={(e) => {
-              setUsername(e.target.value);
-            }}
+            onChange={(e) => usernameChangeHandler(e)}
             type="text"
             className="reg-log-input"
             id="name"
@@ -114,9 +161,7 @@ export default function Registration() {
           <input
             autoComplete="off"
             name="email"
-            onChange={(e) => {
-              setEmail(e.target.value);
-            }}
+            onChange={(e) => emailChangeHandler(e)}
             type="text"
             className="reg-log-input"
             id="email"
@@ -130,9 +175,7 @@ export default function Registration() {
           <input
             autoComplete="off"
             name="password1"
-            onChange={(e) => {
-              setPassword1(e.target.value);
-            }}
+            onChange={(e) => password1ChangeHandler(e)}
             type="password"
             className="reg-log-input"
             id="password1"
@@ -145,13 +188,6 @@ export default function Registration() {
             >
               Показать пароль
             </label>
-            <label
-              onClick={() => {
-                console.log("ЛОХ");
-              }}
-            >
-              Забыли пароль?
-            </label>
           </div>
         </div>
 
@@ -159,9 +195,7 @@ export default function Registration() {
           <input
             autoComplete="off"
             name="password2"
-            onChange={(e) => {
-              setPassword2(e.target.value);
-            }}
+            onChange={(e) => password2ChangeHandler(e)}
             type="password"
             className="reg-log-input"
             id="password2"
@@ -170,7 +204,7 @@ export default function Registration() {
             <label htmlFor="password2">Повторите пароль</label>
           </div>
         </div>
-
+        {errors !== "" ? <h2 className="log-reg-error">{errors}</h2> : null}
         <h2 className="log-reg-h2">
           Если у вас есть аккаунт AI Study Chat,{" "}
           <a href="/login"> то войдите в него</a>

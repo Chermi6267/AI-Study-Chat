@@ -3,31 +3,56 @@ const ChatService = require("../services/Chat.js");
 
 class ChatController {
   async chatList(req, res) {
-    const userID = req.user["id"];
-    const chats = await ChatService.chatList(userID);
+    try {
+      const userID = req.user["id"];
+      const chats = await ChatService.chatList(userID);
+      res.json(chats);
+    } catch (error) {
+      console.error(error);
+      res.status(500).send("Internal Server Error");
+    }
+  }
 
-    res.json(chats);
+  async deleteChat(req, res) {
+    try {
+      const { chatID } = req.params;
+      const result = await ChatService.deleteChat(chatID);
+
+      res.send("Chat successfully have been deleted");
+    } catch (error) {
+      console.error(error);
+      res.status(500).send({ message: "Failed to delete chat" });
+    }
   }
 
   async chatMessages(req, res) {
-    const { chatID, userID } = req.query;
+    try {
+      const { chatID, userID } = req.query;
 
-    const messages = await ChatService.chatMessages(chatID, userID);
-    res.json(messages);
+      const messages = await ChatService.chatMessages(chatID, userID);
+      res.json(messages);
+    } catch (error) {
+      console.log(error);
+      res.status(500).send("Messages list error");
+    }
   }
 
   async textMessage(req, res) {
     const userID = req.user["id"];
     const { chatID, text } = req.body;
-    const response = await ChatService.textMessage(
-      chatID,
-      userID,
-      text,
-      text,
-      ""
-    );
+    try {
+      const response = await ChatService.textMessage(
+        chatID,
+        userID,
+        text,
+        text,
+        ""
+      );
 
-    res.send(response);
+      res.send(response);
+    } catch (error) {
+      res.status(400).send("Что-то пошло не так!");
+    }
   }
 
   async imgMessage(req, res) {

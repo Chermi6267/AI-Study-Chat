@@ -6,12 +6,21 @@ import "./css/style.css";
 import "./css/animations.css";
 import { Provider } from "react-redux";
 import { store } from "./store";
+import { ThemeProvider } from "./components/providers/ThemeProvider";
+import { OrientationProvider } from "./components/providers/OrientationProvider";
+import { SelectedChatProvider } from "./components/providers/SelectedChatProvider";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <Provider store={store}>
     <React.StrictMode>
-      <App />
+      <ThemeProvider>
+        <OrientationProvider>
+          <SelectedChatProvider>
+            <App />
+          </SelectedChatProvider>
+        </OrientationProvider>
+      </ThemeProvider>
     </React.StrictMode>
   </Provider>
 );

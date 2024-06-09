@@ -1,118 +1,139 @@
 /* ============ USER_MENU ============ */
 
 .user-menu-wrapper {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    z-index: 3;
-    width: 70%;
-    height: auto;
-    -webkit-box-shadow: 0px 0px 50px -10px rgba(0, 0, 0, 0.5);
-    -moz-box-shadow: 0px 0px 50px -10px rgba(0, 0, 0, 0.5);
-    box-shadow: 0px 0px 50px -10px rgba(0, 0, 0, 0.5);
-    background-color: var(--backgr-color-dr-th);
-    border-radius: 20px;
-    border: 3px solid var(--color2-dr-th);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 3;
+  width: 70%;
+  height: auto;
+  -webkit-box-shadow: 0px 0px 50px -10px rgba(0, 0, 0, 0.5);
+  -moz-box-shadow: 0px 0px 50px -10px rgba(0, 0, 0, 0.5);
+  box-shadow: 0px 0px 50px -10px rgba(0, 0, 0, 0.5);
+  background-color: var(--backgr-color-dr-th);
+  border-radius: 20px;
+  border: 3px solid var(--color2-dr-th);
 }
 
 .user-menu-container {
-    padding: 15px;
-    width: calc(100% - 30px);
-    height: 100%;
-    border-radius: 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    row-gap: 10px
+  padding: 15px;
+  width: calc(100% - 30px);
+  height: 100%;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  row-gap: 10px;
 }
 
 .ava-username-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    row-gap: 0.5em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  row-gap: 0.5em;
 }
 
 .ava-username-container p {
-    font-size: x-large;
-    font-weight: 500;
+  font-size: x-large;
+  font-weight: 500;
 }
 
 .ava-username-container p::-webkit-scrollbar {
-    display: none;
+  display: none;
 }
 
 .info-container {
-    display: flex;
-    column-gap: clamp(5px, 2vw, 20px);
-    justify-content: flex-start;
-    width: 80%;
-    align-items: center;
+  display: flex;
+  column-gap: clamp(5px, 2vw, 20px);
+  justify-content: center;
+  width: 80%;
+  align-items: center;
 }
 
 .info-container p {
-    margin-top: 3px;
-    font-weight: 200;
-    font-size: small;
+  margin-top: 3px;
+  font-weight: 200;
+  font-size: small;
 }
 
 .info-container h2 {
-    overflow-y: hidden;
-    overflow-x: scroll;
+  overflow-y: hidden;
+  overflow-x: scroll;
 }
 
 .info-container h2::-webkit-scrollbar {
-    display: none;
+  display: none;
 }
 
 .user-menu-btn-container {
-    position: absolute;
-    bottom: -32px;
-    height: 30px;
-    width: 100%;
-    z-index: -5;
-    display: flex;
-    justify-content: space-around;
+  position: absolute;
+  bottom: -32px;
+  height: 30px;
+  width: 100%;
+  z-index: -5;
+  display: flex;
+  justify-content: space-around;
 }
 
 .user-menu-btn {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    border: none;
-    padding: 0;
-    border-radius: 0 0 20px 20px;
-    background-color: var(--backgr-color-dr-th);
-    color: var(--text-dr-th);
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border: none;
+  padding: 0;
+  border-radius: 0 0 20px 20px;
+  background-color: var(--backgr-color-dr-th);
+  color: var(--text-dr-th);
 }
 
 .user-menu-btn::before {
-    position: absolute;
-    left: -3px;
-    top: 0;
-    content: '';
-    background-image: var(--gradient-dr-th-90deg);
-    width: calc(100% + 6px);
-    height: calc(100% + 3px);
-    z-index: -1;
-    border-radius: 0 0 20px 20px;
-    background-size: 200%;
-    animation: ln-bg-gr-animation2 2s ease infinite;
+  position: absolute;
+  left: -3px;
+  top: 0;
+  content: "";
+  background-image: var(--gradient-dr-th-90deg);
+  width: calc(100% + 6px);
+  height: calc(100% + 3px);
+  z-index: -1;
+  border-radius: 0 0 20px 20px;
+  background-size: 200%;
+  animation: ln-bg-gr-animation2 2s ease infinite;
 }
 
 .user-menu-icon {
-    stroke: var(--text-dr-th);
-    width: 1.3em;
-    stroke-width: 2px;
+  stroke: var(--text-dr-th);
+  width: 1.3em;
+  stroke-width: 2px;
 }
 
 .user-menu-icon.tel {
-    stroke-width: 1px;
-    width: 1.3em;
-    fill: var(--text-dr-th);
+  stroke-width: 1px;
+  width: 1.3em;
+  fill: var(--text-dr-th);
 }
 
 .profile-ava {
-    stroke: var(--text-dr-th);
-    width: 4.5em;
+  stroke: var(--text-dr-th);
+  width: 4.5em;
+}
+
+.user-menu-phone-input {
+  min-width: 25vw;
+  width: 100%;
+  max-width: 35vw;
+  max-height: 10px;
+  overflow: auto;
+  border-radius: 25vw;
+  padding: 1.5vw;
+  outline: none;
+  display: flex;
+  align-items: center;
+}
+
+.user-menu-phone-input:empty::before {
+  content: attr(placeholder);
+}
+
+.user-menu-phone-input::-webkit-scrollbar {
+  display: none;
 }

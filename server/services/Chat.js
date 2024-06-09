@@ -10,7 +10,7 @@ class ChatService {
       const chats = await ChatRepository.getChats(userID);
       return chats;
     } catch (error) {
-      console.error(error);
+      throw error;
     }
   }
 
@@ -20,6 +20,18 @@ class ChatService {
       return messages[0];
     } catch (error) {
       console.log(error);
+      throw new Error(error);
+    }
+  }
+
+  async deleteChat(chatId) {
+    try {
+      const result = await ChatRepository.deleteChat(chatId);
+
+      return result;
+    } catch (error) {
+      console.error(error);
+      throw error;
     }
   }
 
@@ -28,7 +40,10 @@ class ChatService {
       // Checking if there is a chat with certain chatID
       if (!JSON.parse(chatID)) {
         const title =
-          textForUser.slice(0, 50) + (textForUser.length > 50 ? "... " : "");
+          textForUser === ""
+            ? textForAI.slice(0, 50) + (textForAI.length > 50 ? "... " : "")
+            : textForUser.slice(0, 50) +
+              (textForUser.length > 50 ? "... " : "");
         const chat = await ChatRepository.createChat(userID, title);
         chatID = chat.insertId;
       }
@@ -105,6 +120,7 @@ class ChatService {
         };
       }
     } catch (error) {
+      throw new Error("Что-то пошло не так");
       console.log(error);
     }
   }
@@ -120,6 +136,7 @@ class ChatService {
     if (!allowedFileExt.includes(file.mimetype)) {
       throw new Error("INCORRECT FILE EXTENSION");
     }
+
     try {
       const imgUuid = uuidv4();
 
@@ -145,6 +162,7 @@ class ChatService {
       return result;
     } catch (error) {
       console.error(error);
+      throw new Error("");
     }
   }
 

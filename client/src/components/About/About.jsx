@@ -1,86 +1,273 @@
-import React, { useState } from "react";
-import { FaReact } from "react-icons/fa";
-import { IoLogoHtml5 } from "react-icons/io5";
-import { IoLogoCss3 } from "react-icons/io5";
-import { FaNode } from "react-icons/fa6";
+import React, { useContext, useRef } from "react";
+import logo_dr_th from "./img/logo.png";
+import logo_lg_th from "./img/logo_lg_th.png";
+import Me from "./img/meTheGreatest.jpg";
+import rainbowMan from "./img/rainbowMan.jpg";
+import potential from "./img/potentialAbstraction.jpeg";
+import { SiMysql } from "react-icons/si";
+import { IoLogoReact } from "react-icons/io5";
+import { IoLogoJavascript } from "react-icons/io5";
+import { SiExpress } from "react-icons/si";
+import { TbBrandFramerMotion } from "react-icons/tb";
+import { PiFileHtmlFill } from "react-icons/pi";
+import { PiFileCssFill } from "react-icons/pi";
 import Sber from "../svg/Sber";
-import { motion } from "framer-motion";
-import { GiBackForth } from "react-icons/gi";
-import { FaRegSmileWink } from "react-icons/fa";
 import "./about.css";
+import { ThemeContext } from "../providers/ThemeProvider";
+import { useNavigate } from "react-router-dom";
+import Sun from "../svg/Sun";
+import Moon from "../svg/Moon";
+import { motion, useInView } from "framer-motion";
 
-export default function About(target) {
-  const [showMe, setShowMe] = useState(false);
-  const [dragMe, setDragMe] = useState(false);
+export default function About() {
+  const [isDarkMode, setIsDarkMode] = useContext(ThemeContext);
 
-  const dragEvent = (e, info) => {
-    setDragMe(!dragMe);
+  const navigate = useNavigate();
+  const redirect = () => {
+    navigate("/");
+  };
+
+  const logoRef = useRef(null);
+  const isLogoInView = useInView(logoRef, {
+    once: true,
+    amount: 0.1,
+  });
+
+  const opportunitiesRef = useRef(null);
+  const isOpportunitiesInView = useInView(opportunitiesRef, {
+    once: true,
+    amount: 0.1,
+  });
+
+  const stackRef = useRef(null);
+  const isStackInView = useInView(stackRef, { once: true, amount: 0.1 });
+
+  const AIStudyChatRef = useRef(null);
+  const isAIStudyChatInView = useInView(AIStudyChatRef, {
+    once: true,
+    amount: 0.1,
+  });
+
+  const meRef = useRef(null);
+  const isMeInView = useInView(meRef, {
+    once: true,
+    amount: 0.1,
+  });
+
+  const leftVariants = {
+    hidden: {
+      opacity: 0,
+      x: "90%",
+    },
+    animate: {
+      opacity: 1,
+      x: 0,
+    },
+  };
+
+  const rightVariants = {
+    hidden: {
+      opacity: 0,
+      x: "-90%",
+    },
+    animate: {
+      opacity: 1,
+      x: 0,
+    },
+  };
+
+  const divVariants = {
+    hidden: {
+      visibility: "hidden",
+      height: 0,
+      translateY: 5,
+      translateX: 5,
+    },
+    visible: {
+      visibility: "visible",
+      height: "auto",
+      translateY: 0,
+      translateX: 0,
+    },
   };
 
   return (
-    <div>
-      <motion.div
-        style={{ position: "absolute", x: window.innerWidth - 70, y: 30 }}
-        drag={true}
-        dragConstraints={{
-          top: 3,
-          left: 3,
-          right: window.innerWidth - 46,
-          bottom: window.innerHeight - 46,
+    <div className="about-cont">
+      <div
+        className="about-theme-toggle"
+        onClick={() => {
+          setIsDarkMode(!isDarkMode);
         }}
-        onDragStart={dragEvent}
-        onDragEnd={dragEvent}
       >
-        <button
-          type="button"
-          onClick={() => {
-            window.location.href = "/";
-          }}
-          className="submit-btn about-btn"
-        >
-          {dragMe ? <FaRegSmileWink /> : <GiBackForth />}
-        </button>
-      </motion.div>
+        {isDarkMode ? (
+          <Sun divVariants={divVariants} showAll={true} />
+        ) : (
+          <Moon divVariants={divVariants} showAll={true} />
+        )}
+      </div>
+
+      <motion.h1
+        initial="hidden"
+        animate={isLogoInView ? "animate" : "hidden"}
+        variants={{
+          hidden: {
+            opacity: 0,
+            scale: 0,
+          },
+          animate: {
+            opacity: 1,
+            scale: 1,
+          },
+        }}
+        ref={logoRef}
+        className="about-title"
+      >
+        AI Study Chat
+      </motion.h1>
+
       <motion.div
-        className="about-me-container"
-        initial={{ opacity: 0 }}
-        animate={showMe ? { opacity: 1 } : { opacity: 0 }}
+        initial="hidden"
+        animate={isLogoInView ? "animate" : "hidden"}
+        variants={{
+          hidden: {
+            opacity: 0,
+            scale: 0,
+          },
+          animate: {
+            opacity: 1,
+            scale: 1,
+          },
+        }}
+        ref={logoRef}
+        className="about-img-cont"
+        onClick={() => {
+          redirect();
+        }}
       >
         <img
-          onLoad={() => setShowMe(!showMe)}
-          className="this-is-me"
-          src={"/img/meTheGreatest.jpg"}
-          alt="This is me"
+          className="about-img"
+          src={isDarkMode ? logo_dr_th : logo_lg_th}
+          alt="logo"
         />
-        <h1 className="this-is-me-text">
-          Автор:<br></br>
-          Черников Виктор<br></br>
-          Класс: 10A
-        </h1>
       </motion.div>
-      <div className="about">
-        <div className="about-text">
-          <h1>O проекте</h1>
-          <motion.h2
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            style={{ overflow: "hidden" }}
-          >
-            AI Study Chat был создан с целью помощи школьникам и студентам в
-            выполнении домашних, тестовых и контрольных работ. Его отлич
-            ительной особенностью является анализ текста с изображений а также
-            голосовой ввод
-          </motion.h2>
+
+      <motion.div
+        initial="hidden"
+        animate={isOpportunitiesInView ? "animate" : "hidden"}
+        variants={rightVariants}
+        ref={opportunitiesRef}
+        className="about-data-cont"
+      >
+        <div className="about-gradient-line" />
+        <h1 className="about-data-title">Возможности</h1>
+
+        <div className="about-data-img-cont">
+          <img className="about-data-img" src={potential} alt="IMG" />
         </div>
-        <h1>Основные технологии</h1>
-        <motion.div className="stack-container">
-          <FaReact className="icon react" />
-          <IoLogoCss3 className="icon css" />
-          <IoLogoHtml5 className="icon html" />
-          <FaNode className="icon node" />
+
+        <div className="about-data-text">
+          <p>
+            В чате вы взаимодействуете с нейросетью GigaChat от Сбера. Вы также
+            можете отправлять изображения с текстом, который будет распознан, и
+            нейросеть предоставит вам ответ
+          </p>
+        </div>
+      </motion.div>
+
+      <motion.div
+        initial="hidden"
+        animate={isStackInView ? "animate" : "hidden"}
+        variants={leftVariants}
+        ref={stackRef}
+        className="about-stack-cont"
+      >
+        <div className="about-gradient-line" />
+        <h1 className="about-stack-title">Использованные технологии</h1>
+        <div className="stack">
+          <IoLogoReact className="about-icon" />
+          <IoLogoJavascript className="about-icon" />
+          <SiExpress className="about-icon" />
+          <SiMysql className="about-icon" />
+          <TbBrandFramerMotion className="about-icon framer" />
+          <PiFileHtmlFill className="about-icon" />
+          <PiFileCssFill className="about-icon" />
           <Sber />
-        </motion.div>
-      </div>
+        </div>
+      </motion.div>
+
+      <motion.div
+        initial="hidden"
+        animate={isAIStudyChatInView ? "animate" : "hidden"}
+        variants={rightVariants}
+        ref={AIStudyChatRef}
+        className="about-data-cont reverse"
+      >
+        <div className="about-gradient-line" />
+        <h1 className="about-data-title reverse">AI Study Chat</h1>
+
+        <div className="about-data-img-cont reverse">
+          <img className="about-data-img reverse" src={rainbowMan} alt="IMG" />
+        </div>
+
+        <div className="about-data-text reverse">
+          <p>
+            AI Study Chat — это pet-проект, который я создал для улучшения своих
+            навыков программирования на JavaScript
+          </p>
+        </div>
+      </motion.div>
+
+      <motion.div
+        initial="hidden"
+        animate={isMeInView ? "animate" : "hidden"}
+        variants={leftVariants}
+        ref={meRef}
+        className="about-author-cont"
+      >
+        <div className="about-gradient-line" />
+        <h1 className="about-author-title">Автор</h1>
+        <div className="author-ava-cont">
+          <img className="author-ava" src={Me} alt="IMG" />
+        </div>
+        <ul className="author-data-cont">
+          <li className="author-data">
+            Привет! Я Черников Виктор, мне 16 лет. Я разработчик с двухлетним
+            опытом. За это время я развил навыки в разработке на Python и
+            JavaScript, а также изучил CSS, HTML и SQL. Кроме того, владею
+            английским языком. В своей работе я стремлюсь к качественному коду и
+            эффективным решениям задач
+          </li>
+        </ul>
+      </motion.div>
+
+      <button
+        onClick={() => {
+          redirect();
+        }}
+        className="about-btn"
+      >
+        AI Study Chat
+      </button>
+
+      <footer
+        style={{
+          height: "10%",
+          width: "100vw",
+          textAlign: "center",
+          paddingBottom: 15,
+          lineHeight: "normal",
+          color: "var(--text-dr-th)",
+        }}
+      >
+        05.06.2024<br></br>
+        &copy; AI Study Chat<br></br>
+        <a
+          style={{ color: "var(--text-dr-th)" }}
+          href="https://t.me/chermi6267"
+        >
+          @chermi6267
+        </a>
+      </footer>
     </div>
   );
 }

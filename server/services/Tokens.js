@@ -4,11 +4,12 @@ const dotenv = require("dotenv").config({ path: "../.env" });
 // Service for managing tokens
 class tokensService {
   // Generating access token service
-  async generateAccessToken(id, username, email) {
+  async generateAccessToken(id, username, email, phone) {
     const payload = {
       id,
       username,
       email,
+      phone,
     };
     return jwt.sign(payload, process.env.JWT_ACCESS_SECRET, {
       expiresIn: "20m",
@@ -16,11 +17,12 @@ class tokensService {
   }
 
   // Generating refresh token service
-  async generateRefreshToken(id, username, email) {
+  async generateRefreshToken(id, username, email, phone) {
     const payload = {
       id,
       username,
       email,
+      phone,
     };
     return jwt.sign(payload, process.env.JWT_REFRESH_SECRET, {
       expiresIn: "7d",

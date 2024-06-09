@@ -5,10 +5,10 @@ import Moon from "../svg/Moon";
 import Info from "../svg/Info";
 import Chat from "../svg/Chat";
 import Dots from "../svg/Dots";
-import OrintationArrow from "../svg/OrintationArrow";
+import OrientationArrow from "../svg/OrientationArrow";
 import User from "../svg/User";
 import { ThemeContext } from "../providers/ThemeProvider";
-import { OrintationContext } from "../providers/OrintationProvider";
+import { OrientationContext } from "../providers/OrientationProvider";
 import "./navBar.css";
 
 export default function NavigationMenu({ messageNavbarHeight }) {
@@ -18,7 +18,7 @@ export default function NavigationMenu({ messageNavbarHeight }) {
   };
 
   const [isDarkMode, setIsDarkMode] = useContext(ThemeContext);
-  const [navBarIsRight, setNavBarIsRight] = useContext(OrintationContext);
+  const [navBarIsRight, setNavBarIsRight] = useContext(OrientationContext);
 
   const dotsRef = useRef(null);
   const [navHeight, setNavHeight] = useState(48);
@@ -40,7 +40,9 @@ export default function NavigationMenu({ messageNavbarHeight }) {
   const navBarRef = useRef(null);
 
   useEffect(() => {
-    setBottomConstraint(Math.abs(messageNavbarHeight - navHeight * 6));
+    setBottomConstraint(
+      Math.abs(messageNavbarHeight - navHeight * 6) - window.innerHeight * 0.02
+    );
   }, [messageNavbarHeight, navHeight]);
 
   const updateY = (info, event) => {
@@ -115,8 +117,8 @@ export default function NavigationMenu({ messageNavbarHeight }) {
             showAll={showAll}
           />
           <User showAll={showAll} divVariants={divVariants} />
-          <OrintationArrow
-            navBarOrintation={navBarIsRight}
+          <OrientationArrow
+            navBarOrientation={navBarIsRight}
             setNavBarIsRight={() => {
               setNavBarIsRight(!navBarIsRight);
             }}

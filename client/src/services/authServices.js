@@ -16,4 +16,8 @@ export default class AuthServices {
   static async logout() {
     return api.get("/authentication/logout");
   }
+
+  static async addPhone(phone) {
+    return api.put("/authentication/add-phone", { phone });
+  }
 }

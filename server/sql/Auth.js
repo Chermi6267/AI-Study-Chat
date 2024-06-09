@@ -35,6 +35,19 @@ class authRepository {
       return console.error("Error receiving users:", error);
     }
   }
+
+  async addPhone(userID, phone) {
+    try {
+      const result = await db.query(`UPDATE users SET phone = ? WHERE id = ?`, [
+        phone,
+        userID,
+      ]);
+
+      return result;
+    } catch (error) {
+      throw error;
+    }
+  }
 }
 
 module.exports = new authRepository();

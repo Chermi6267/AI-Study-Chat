@@ -3,7 +3,7 @@ import React from "react";
 function Submit() {
   return (
     <svg
-      className="input-tool submit-svg"
+      className="input-tool"
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 24 24"
       fill="none"

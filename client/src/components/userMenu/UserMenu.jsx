@@ -1,4 +1,4 @@
-import React, { useContext, useRef } from "react";
+import React, { useContext, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import Ava from "../svg/Ava";
 import { UserMenuContext } from "../providers/UserMenuProvider";
@@ -9,13 +9,24 @@ import "./userMenu.css";
 import { useAuth } from "../hooks/useAuth";
 import AuthServices from "../../services/authServices";
 import { useDispatch } from "react-redux";
-import { removeUser } from "../../store/slices/userSlice";
+import { removeUser, setUser } from "../../store/slices/userSlice";
 import { SelectedChatContext } from "../providers/SelectedChatProvider";
 
 export default function UserMenu() {
-  const [selectedChat, selectChat] = useContext(SelectedChatContext);
+  const { id, email, username, phone, token } = useAuth();
+  const profInfo = {
+    userName: username,
+    userEmail: email,
+    userPhone: phone,
+  };
+
+  const [isUserMenuOpen, setIsUserMenuOpen] = useContext(UserMenuContext);
+  const [, selectChat] = useContext(SelectedChatContext);
   const dispatch = useDispatch();
-  const handleLogout = (username, password) => {
+  const [phoneValue, setPhoneValue] = useState("");
+  const phoneInputRef = useRef(null);
+
+  const handlerLogout = (username, password) => {
     selectChat(false);
     AuthServices.logout(username, password)
       .then((response) => {
@@ -28,7 +39,34 @@ export default function UserMenu() {
       });
   };
 
-  const [isUserMenuOpen, setIsUserMenuOpen] = useContext(UserMenuContext);
+  const handlerAddPhone = () => {
+    AuthServices.addPhone(phoneValue)
+      .then((response) => {
+        localStorage.setItem("token", response.data["data"]["accessToken"]);
+        dispatch(
+          setUser({
+            phone: response.data["data"]["phone"],
+            id: id,
+            email: email,
+            username: username,
+            token: response.data["data"]["accessToken"],
+          })
+        );
+        if (phoneInputRef && phoneInputRef.current) {
+          phoneInputRef.current.style.outline = "2px solid greenyellow";
+          setTimeout(() => {
+            phoneInputRef.current.style.outline = "0px solid greenyellow";
+          }, 800);
+        }
+      })
+      .catch((error) => {
+        if (phoneInputRef && phoneInputRef.current) {
+          phoneInputRef.current.style.outline = "2px solid tomato";
+          phoneInputRef.current.focus();
+        }
+        console.log(error);
+      });
+  };
 
   const divVariants1 = {
     hidden: {
@@ -44,6 +82,13 @@ export default function UserMenu() {
     if (isUserMenuOpen) {
       setTimeout(() => {
         setIsUserMenuOpen(false);
+        if (phoneInputRef && phoneInputRef.current) {
+          phoneInputRef.current.style.outline = "0px solid tomato";
+          phoneInputRef.current.innerText =
+            profInfo.userPhone !== "" && profInfo.userPhone !== null
+              ? profInfo.userPhone
+              : "";
+        }
       }, 50);
     }
   });
@@ -51,18 +96,12 @@ export default function UserMenu() {
   const newChatVariants = {
     hidden: {
       translateY: -30,
-      opasity: 0,
+      opacity: 0,
     },
     visible: {
       translateY: 1,
-      opasity: 1,
+      opacity: 1,
     },
-  };
-  const { username, email } = useAuth();
-  const profInfo = {
-    userName: username,
-    userEmail: email,
-    userPhone: "+79991730587",
   };
 
   return (
@@ -82,14 +121,39 @@ export default function UserMenu() {
           <Email />
           <div style={{ maxWidth: "calc(100% - 1.3em)" }}>
             <h2>{profInfo.userEmail}</h2>
-            <p>Изменить email</p>
           </div>
         </div>
         <div className="info-container">
           <Phone />
           <div style={{ maxWidth: "calc(100% - 1.3em)" }}>
-            <h2>{profInfo.userPhone}</h2>
-            <p>Изменить номер</p>
+            <div
+              className="user-menu-phone-input"
+              suppressContentEditableWarning={true}
+              contentEditable
+              ref={phoneInputRef}
+              placeholder="Телефон"
+              onInput={(e) => {
+                setPhoneValue(e.target.innerText);
+
+                if (phoneInputRef && phoneInputRef.current) {
+                  phoneInputRef.current.style.outline = "0px solid tomato";
+                }
+              }}
+              onBlur={() => {
+                handlerAddPhone();
+              }}
+              onKeyDown={(e) => {
+                if (e.code === "Enter") {
+                  e.preventDefault();
+                  if (phoneInputRef && phoneInputRef.current) {
+                    phoneInputRef.current.blur();
+                  }
+                  handlerAddPhone();
+                }
+              }}
+            >
+              {profInfo.userPhone}
+            </div>
           </div>
         </div>
       </motion.div>
@@ -101,10 +165,10 @@ export default function UserMenu() {
           animate={isUserMenuOpen ? "visible" : "hidden"}
           transition={{ delay: 0.15, type: "just" }}
           onClick={() => {
-            handleLogout();
+            handlerLogout();
           }}
         >
-          <button className="user-menu-btn" style={{ color: "red" }}>
+          <button className="user-menu-btn" style={{ color: "tomato" }}>
             Выйти
           </button>
         </motion.div>

@@ -12,7 +12,7 @@ export default function HumanMessage({ element, setMessageScrollHeight }) {
       <div className="human-message-container">
         {element.img_path === "" || element.img_path === undefined ? null : (
           <img
-            style={{ width: "100%", borderRadius: 10, padding: "3% 0" }}
+            style={{ width: "100%", borderRadius: 20, padding: "3% 0" }}
             src={test}
             alt=""
             onLoad={() => setMessageScrollHeight(element.id)}

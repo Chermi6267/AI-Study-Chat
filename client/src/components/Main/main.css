@@ -1,11 +1,18 @@
 /* ============ MAIN ============ */
 
 .main-page-container {
-    display: flex;
-    flex-direction: column;
-    height: 100vh;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.main-wrapper {
+  width: 100%;
+  overflow: hidden;
+  position: relative;
 }
 
 .message-navbar {
-    display: flex;
+  display: flex;
 }

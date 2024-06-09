@@ -50,6 +50,7 @@ class authController {
         user.refreshToken,
         JSON.parse(process.env.REFRESH_TOKEN_COOKIE_OPTIONS)
       );
+
       return res.status(user.status).json(user.data);
     } catch (error) {
       console.error(error);
@@ -92,6 +93,34 @@ class authController {
     } catch (error) {
       console.error(error);
       res.status(400).json({ message: "Getting all users error" });
+    }
+  }
+
+  async addPhone(req, res) {
+    try {
+      const { id, username, email } = req.user;
+      const { phone } = req.body;
+      const validationErrors = validationResult(req);
+      if (validationErrors["errors"].length !== 0) {
+        return res
+          .status(422)
+          .json({ message: validationErrors["errors"][0]["msg"] });
+      }
+
+      const result = await authService.addPhone(id, phone, username, email);
+
+      res.cookie(
+        "refreshToken",
+        result[1],
+        JSON.parse(process.env.REFRESH_TOKEN_COOKIE_OPTIONS)
+      );
+      res.send({
+        message: "Phone has been added successfully",
+        data: { phone, accessToken: result[0] },
+      });
+    } catch (error) {
+      console.log(error);
+      res.status(500).send("Phone adding error");
     }
   }
 }

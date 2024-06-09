@@ -17,14 +17,13 @@ function IMGMenu({ imgUploadHandler, file }) {
       }, 50);
     }
   });
+
   const imgMenuVariants = {
     hidden: {
       top: "150%",
-      opacity: 0,
     },
     visible: {
       top: "calc(-50vh + 3px)",
-      opacity: 1,
     },
   };
 

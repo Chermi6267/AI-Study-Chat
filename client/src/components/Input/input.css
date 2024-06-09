@@ -1,100 +1,150 @@
 /* ============ INPUT ============ */
 
 .input-wrapper {
-    width: 91.82412790697675%;
-    height: 60px;
-    min-height: 60px;
-    display: flex;
-    flex-wrap: nowrap;
-    align-content: center;
-    justify-content: center;
-    padding: 3%;
-    padding-top: 1%;
-    margin: 0 auto;
-    position: relative;
+  width: 91.82412790697675%;
+  height: 60px;
+  min-height: 60px;
+  display: flex;
+  flex-wrap: nowrap;
+  align-content: center;
+  justify-content: center;
+  padding: 3%;
+  padding-top: 1%;
+  margin: 0 auto;
+  position: relative;
+  z-index: 10;
 }
 
 .inputbox {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    border-radius: 50px;
-    background-size: 400%;
-    padding: 3px;
-    display: flex;
-    flex-wrap: nowrap;
-    align-content: center;
-    justify-content: flex-end;
-    align-items: center;
-    overflow: hidden;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 50px;
+  background-size: 400%;
+  padding: 3px;
+  display: flex;
+  flex-wrap: nowrap;
+  align-content: center;
+  justify-content: flex-end;
+  align-items: center;
+  overflow: hidden;
+}
+
+.inputbox.inactive {
+  user-select: none;
+  pointer-events: none;
+  filter: brightness(0.7);
+}
+
+.input-wrapper::before {
+  position: absolute;
+  z-index: -1;
+  content: "";
+  width: 100vw;
+  height: 100%;
+  background-color: var(--backgr-color-dr-th);
 }
 
 .inputbox::before {
-    content: '';
-    position: absolute;
-    background: var(--gradient-dr-th-90deg);
-    width: 100vw;
-    height: 100vw;
-    z-index: -1;
-    left: 0;
-    animation: ln-bg-gr-animation 3s infinite linear;
-    border-radius: 100vw;
+  content: "";
+  position: absolute;
+  background: var(--gradient-dr-th-90deg);
+  width: 100vw;
+  height: 100vw;
+  z-index: -1;
+  left: 0;
+  animation: ln-bg-gr-animation 3s infinite linear;
+  border-radius: 100vw;
 }
 
 @media screen and (min-width: 661px) {
-    .inputbox::before {
-        background-size: 200%;
-    }
+  .inputbox::before {
+    background-size: 200%;
+  }
 }
 
 .input-container {
-    border-radius: 50px;
-    width: 100%;
-    height: 100%;
-    background: var(--color1-dr-th);
-    display: flex;
+  border-radius: 50px;
+  width: 100%;
+  height: 100%;
+  background: var(--color1-dr-th);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .main-input {
-    background: transparent;
-    padding: 0;
-    width: 65%;
-    border: none;
-    padding-left: clamp(20px, 7vw, 30px);
-    color: var(--text-dr-th)
+  background: transparent;
+  padding: 0;
+  width: 65%;
+  border: none;
+  padding-left: clamp(20px, 7vw, 30px);
+  color: var(--text-dr-th);
 }
 
 .main-input:focus {
-    outline: none;
+  outline: none;
 }
 
 .main-input::placeholder {
-    color: var(--text-dr-th);
-    font-size: clamp(14px, 5vw, 15px);
+  color: var(--text-dr-th);
+  font-size: clamp(14px, 5vw, 15px);
 }
 
 .tools-container {
-    position: absolute;
-    padding-right: clamp(20px, 7vw, 30px);
-    height: 100%;
-    display: flex;
-    column-gap: clamp(10px, 5vw, 12px);
-    align-items: center;
+  padding-right: clamp(10px, 7vw, 20px);
+  height: 100%;
+  display: flex;
+  column-gap: clamp(10px, 5vw, 12px);
+  align-items: center;
+  justify-content: center;
 }
 
 .input-tool-btn {
-    padding: 0;
-    border: 0;
-    background: transparent;
-    width: clamp(15px, 5vw, 20px);
-    height: clamp(15px, 5vw, 20px);
+  padding: 0;
+  border: 0;
+  background: transparent;
+  width: clamp(15px, 5vw, 20px);
+  height: clamp(15px, 5vw, 20px);
 }
 
 .input-tool {
-    stroke: var(--text-dr-th);
+  stroke: var(--text-dr-th);
 }
 
 .submit-svg {
-    width: 20px;
-    height: auto;
+  width: 20px;
+  height: auto;
+}
+
+.new-input {
+  border-radius: 50px 0 0 50px;
+  width: 100%;
+  height: auto;
+  max-height: 80%;
+  resize: none;
+  padding-left: clamp(20px, 7vw, 30px);
+  padding-right: min(1%, 5vw);
+  color: var(--text-dr-th);
+  word-break: break-word;
+  white-space: pre-wrap;
+  box-sizing: border-box;
+  overflow-y: auto;
+  text-align: left;
+}
+
+.new-input:empty:before {
+  content: attr(placeholder);
+  color: var(--text-dr-th);
+  opacity: 0.8;
+  width: 100%;
+  height: 100%;
+}
+
+.new-input::-webkit-scrollbar {
+  display: none;
+}
+
+.new-input:focus {
+  outline: none;
 }

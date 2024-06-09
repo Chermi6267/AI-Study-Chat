@@ -14,7 +14,7 @@ class authService {
       if (candidate[0].length !== 0) {
         return {
           status: 409,
-          data: { message: "A user with that username already exists" },
+          data: { message: "Пользователь с этим именем уже зарегистрирован" },
         };
       }
 
@@ -32,12 +32,14 @@ class authService {
       const refreshToken = await tokensService.generateRefreshToken(
         user.insertId,
         username,
-        email
+        email,
+        ""
       );
       const accessToken = await tokensService.generateAccessToken(
         user.insertId,
         username,
-        email
+        email,
+        ""
       );
 
       // Saving refresh session in db
@@ -55,6 +57,7 @@ class authService {
             id: user.insertId,
             username: username,
             email: email,
+            phone: "",
             access_token: accessToken,
           },
         },
@@ -73,7 +76,7 @@ class authService {
       if (user[0].length === 0) {
         return {
           status: 400,
-          data: { message: "Invalid username or password" },
+          data: { message: "Неправильная пара логин/пароль" },
         };
       }
 
@@ -85,7 +88,7 @@ class authService {
       if (!validPassword) {
         return {
           status: 400,
-          data: { message: "Invalid username or password" },
+          data: { message: "Неправильная пара логин/пароль" },
         };
       }
 
@@ -93,7 +96,8 @@ class authService {
       const refreshToken = await tokensService.generateRefreshToken(
         user[0][0]["id"],
         user[0][0]["username"],
-        user[0][0]["email"]
+        user[0][0]["email"],
+        user[0][0]["phone"]
       );
       const updateRefreshSession = await tokensRepository.updateRefreshSession(
         user[0][0]["id"],
@@ -104,7 +108,8 @@ class authService {
       const accessToken = await tokensService.generateAccessToken(
         user[0][0]["id"],
         user[0][0]["username"],
-        user[0][0]["email"]
+        user[0][0]["email"],
+        user[0][0]["phone"]
       );
 
       return {
@@ -116,6 +121,7 @@ class authService {
             id: user[0][0]["id"],
             username: user[0][0]["username"],
             email: user[0][0]["email"],
+            phone: user[0][0]["phone"],
             access_token: accessToken,
           },
         },
@@ -151,7 +157,8 @@ class authService {
       const accessToken = await tokensService.generateAccessToken(
         userData["id"],
         userData["username"],
-        userData["email"]
+        userData["email"],
+        userData["phone"]
       );
 
       return {
@@ -160,6 +167,7 @@ class authService {
           id: userData["id"],
           username: userData["username"],
           email: userData["email"],
+          phone: userData["phone"],
           accessToken: accessToken,
         },
       };
@@ -180,6 +188,32 @@ class authService {
       };
     } catch (error) {
       console.error(error);
+    }
+  }
+
+  async addPhone(userID, phone, username, email) {
+    try {
+      const result = await authRepository.addPhone(userID, phone);
+      const newAccessToken = await tokensService.generateAccessToken(
+        userID,
+        username,
+        email,
+        phone
+      );
+      const newRefreshToken = await tokensService.generateRefreshToken(
+        userID,
+        username,
+        email,
+        phone
+      );
+      const test = await tokensRepository.updateRefreshSession(
+        userID,
+        newRefreshToken
+      );
+
+      return [newAccessToken, newRefreshToken];
+    } catch (error) {
+      throw error;
     }
   }
 }

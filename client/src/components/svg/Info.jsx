@@ -1,14 +1,20 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 
 export default function Info({ showAll, divVariants }) {
   const [animate, setAnimate] = useState(false);
+
+  const navigate = useNavigate();
+  const redirect = () => {
+    navigate("/about");
+  };
 
   const openInfo = () => {
     setAnimate(!animate);
     setTimeout(() => {
       setAnimate(animate);
-      window.location.href = "/about";
+      redirect();
     }, 200);
   };
 

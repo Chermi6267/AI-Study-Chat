@@ -3,7 +3,7 @@ import NavigationMenu from "../NavigationMenu/NavigationMenu";
 import UserMenu from "../userMenu/UserMenu";
 import Messages from "../messages/Messages";
 import Input from "../Input/Input";
-import { OrintationContext } from "../providers/OrintationProvider";
+import { OrientationContext } from "../providers/OrientationProvider";
 import { UserMenuProvider } from "../providers/UserMenuProvider";
 import { ChatMenuProvider } from "../providers/ChatMenuProvider";
 import { IMGMenuProvider } from "../providers/IMGMenuProvider";
@@ -12,19 +12,40 @@ import Cap from "../Cap/Cap";
 import "./main.css";
 import { useAuth } from "../hooks/useAuth";
 import GetStarted from "../regLog/GetStarted";
-import { SelectedChatProvider } from "../providers/SelectedChatProvider";
+import ChatService from "../../services/chatServices";
+import { SelectedChatContext } from "../providers/SelectedChatProvider";
 
 export default function Main() {
   const { isAuth } = useAuth();
-  const inputRef = useRef();
-  const [navBarIsRight, setNavBarIsRight] = useContext(OrintationContext);
+  const inputContRef = useRef();
+  const [navBarIsRight, setNavBarIsRight] = useContext(OrientationContext);
   const [messageNavbarHeight, setMessageNavbarHeight] = useState(0);
-  const [messages, setMessages] = useState();
+  const [messagesLoading, setMessagesLoading] = useState(true);
+  const [messages, setMessages] = useState([]);
+  const [messagesError, setMessagesError] = useState(false);
+  const [chatsMenuTrigger, setChatsMenuTrigger] = useState();
+  const [selectedChat] = useContext(SelectedChatContext);
+  const { id } = useAuth();
+
   useEffect(() => {
-    if (inputRef.current) {
+    setMessagesLoading(true);
+    ChatService.chatMessages(selectedChat, id)
+      .then((res) => {
+        setMessages(res.data);
+        setMessagesLoading(false);
+      })
+      .catch((error) => {
+        setMessagesError(true);
+        setMessagesLoading(false);
+        console.log(error);
+      });
+  }, [selectedChat, id]);
+
+  useEffect(() => {
+    if (inputContRef.current) {
       const resizeHandler = () => {
         setMessageNavbarHeight(
-          window.innerHeight - inputRef.current.clientHeight
+          window.innerHeight - inputContRef.current.clientHeight
         );
       };
       window.addEventListener("resize", resizeHandler);
@@ -33,43 +54,47 @@ export default function Main() {
         window.removeEventListener("resize", resizeHandler);
       };
     }
-  }, [inputRef, isAuth]);
+  }, [inputContRef, isAuth]);
 
   const messagesComponent = useMemo(
-    () => <Messages messages={messages} setMessages={(v) => setMessages(v)} />,
-    [messages]
+    () => (
+      <Messages
+        messagesError={messagesError}
+        messages={messages}
+        loading={messagesLoading}
+      />
+    ),
+    [messages, messagesLoading, messagesError]
   );
+
   const navigationMenuComponent = useMemo(
     () => (
       <NavigationMenu
         messageNavbarHeight={messageNavbarHeight}
-        navBarOrintation={navBarIsRight}
-        inputRef={inputRef}
+        navBarOrientation={navBarIsRight}
+        inputContRef={inputContRef}
         setNavBarIsRight={() => {
           setNavBarIsRight(!navBarIsRight);
         }}
       />
     ),
-    [messageNavbarHeight, navBarIsRight, inputRef, setNavBarIsRight]
+    [messageNavbarHeight, navBarIsRight, inputContRef, setNavBarIsRight]
   );
 
   if (!isAuth) {
-    return (
-      <UserMenuProvider>
-        <ChatMenuProvider>
-          <GetStarted />
-        </ChatMenuProvider>
-      </UserMenuProvider>
-    );
+    return <GetStarted />;
   }
 
   return (
-    <UserMenuProvider>
-      <ChatMenuProvider>
-        <SelectedChatProvider>
+    <div className="main-wrapper">
+      <UserMenuProvider>
+        <ChatMenuProvider>
           <IMGMenuProvider>
             <UserMenu />
-            <ChatsMenu />
+            <ChatsMenu
+              chatsMenuTrigger={chatsMenuTrigger}
+              setChatsMenuTrigger={(v) => setChatsMenuTrigger(v)}
+            />
             <div className="main-page-container">
               <Cap />
               <div
@@ -84,15 +109,17 @@ export default function Main() {
               </div>
               {
                 <Input
-                  inputRef={inputRef}
+                  messagesError={messagesError}
+                  inputContRef={inputContRef}
                   messages={messages}
+                  setChatsMenuTrigger={(v) => setChatsMenuTrigger(v)}
                   setMessages={(v) => setMessages(v)}
                 />
               }
             </div>
           </IMGMenuProvider>
-        </SelectedChatProvider>
-      </ChatMenuProvider>
-    </UserMenuProvider>
+        </ChatMenuProvider>
+      </UserMenuProvider>
+    </div>
   );
 }

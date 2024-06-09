@@ -9,7 +9,19 @@ class ChatRepository {
       );
       return result[0];
     } catch (error) {
-      console.log(error);
+      console.error(error);
+      throw error;
+    }
+  }
+
+  async deleteChat(chatID) {
+    try {
+      const result = await db.query(`DELETE FROM chats WHERE id = ?`, [chatID]);
+
+      return result;
+    } catch (error) {
+      console.error(error);
+      throw error;
     }
   }
 
@@ -22,6 +34,7 @@ class ChatRepository {
       return result;
     } catch (error) {
       console.log(error);
+      throw new Error(error);
     }
   }
 
@@ -48,11 +61,22 @@ class ChatRepository {
 
   async createChat(userID, title) {
     try {
-      const [chat] = await db.query(
-        "INSERT INTO chats SET user_id = ?, title = ?, created_at = ?",
-        [userID, title, await this.getTimestamp()]
-      );
-      return chat;
+      if (title.trim() !== "") {
+        const [chat] = await db.query(
+          "INSERT INTO chats SET user_id = ?, title = ?, created_at = ?",
+          [userID, title, await this.getTimestamp()]
+        );
+
+        return chat;
+      } else {
+        title = "Новый чат";
+        const [chat] = await db.query(
+          "INSERT INTO chats SET user_id = ?, title = ?, created_at = ?",
+          [userID, title, await this.getTimestamp()]
+        );
+
+        return chat;
+      }
     } catch (error) {
       console.log(error);
     }

@@ -13,6 +13,10 @@ export default class ChatService {
     return api.post("/chat/text-message", { chatID, text });
   }
 
+  static async deleteChat(chatID) {
+    return api.delete(`/chat/delete-chat/${chatID}`);
+  }
+
   static async sendIMG(image, text, chatID) {
     return api.post(
       "/chat/img-message",

@@ -7,6 +7,7 @@ router.get("/chat-list", isAuthenticated, controller.chatList);
 router.get("/chat-messages", isAuthenticated, controller.chatMessages);
 router.post("/text-message", isAuthenticated, controller.textMessage);
 router.post("/img-message", isAuthenticated, controller.imgMessage);
+router.delete("/delete-chat/:chatID", isAuthenticated, controller.deleteChat);
 router.get("/images/:imageName", controller.getImage);
 
 module.exports = router;

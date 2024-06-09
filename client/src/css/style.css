@@ -1,34 +1,53 @@
-@import url('https://fonts.googleapis.com/css2?family=Sofia+Sans:wght@1;100;200;300;400;500;600;700;800;900;1000&display=swap');
+/* ============ STYLE ============ */
+
+@import url("https://fonts.googleapis.com/css2?family=Sofia+Sans:wght@1;100;200;300;400;500;600;700;800;900;1000&display=swap");
 
 body {
-    font-family: 'Sofia Sans', sans-serif;
-    font-size: clamp(14px, 5vw, 15px);
-    color: var(--text-dr-th);
-    --gradient-dr-th-90deg: linear-gradient(90deg, #83F5E5 0%, #00D8FF 45%, #E761BD 100%);
-    --gradient-dr-th-180deg: linear-gradient(180deg, #83F5E5 0%, #00D8FF 45%, #E761BD 100%);
-    --backgr-color-dr-th: #E8E2F0;
-    --text-dr-th: #71727C;
-    --color1-dr-th: #E2CBDB;
-    --color2-dr-th: #D1D2F5;
+  font-family: "Sofia Sans", sans-serif;
+  font-size: clamp(14px, 5vw, 15px);
+  color: var(--text-dr-th);
+  --gradient-dr-th-90deg: linear-gradient(
+    90deg,
+    #83f5e5 0%,
+    #00d8ff 45%,
+    #e761bd 100%
+  );
+  --gradient-dr-th-180deg: linear-gradient(
+    180deg,
+    #83f5e5 0%,
+    #00d8ff 45%,
+    #e761bd 100%
+  );
+  --backgr-color-dr-th: #e8e2f0;
+  --text-dr-th: #71727c;
+  --color1-dr-th: #e2cbdb;
+  --color2-dr-th: #d1d2f5;
 }
 
 body.dark {
-    font-family: 'Sofia Sans', sans-serif;
-    font-size: clamp(14px, 5vw, 15px);
-    --gradient-dr-th-90deg: linear-gradient(90deg, #FB7185 0%, #B94FEF 45%, #6365F1 100%);
-    --gradient-dr-th-180deg: linear-gradient(180deg, #FB7185 0%, #B94FEF 45%, #6365F1 100%);
-    --backgr-color-dr-th: #2D2C3A;
-    --text-dr-th: #FFFFFF;
-    --color1-dr-th: #747182;
-    --color2-dr-th: #554659;
+  font-family: "Sofia Sans", sans-serif;
+  font-size: clamp(14px, 5vw, 15px);
+  --gradient-dr-th-90deg: linear-gradient(
+    90deg,
+    #fb7185 0%,
+    #b94fef 45%,
+    #6365f1 100%
+  );
+  --gradient-dr-th-180deg: linear-gradient(
+    180deg,
+    #fb7185 0%,
+    #b94fef 45%,
+    #6365f1 100%
+  );
+  --backgr-color-dr-th: #2d2c3a;
+  --text-dr-th: #ffffff;
+  --color1-dr-th: #747182;
+  --color2-dr-th: #554659;
 }
 
 .root-bg {
-    background-color: var(--backgr-color-dr-th);
-    position: fixed;
-    width: 100vw;
-    height: 100vh;
-    z-index: -10;
-    top: 0;
-    left: 0;
+  background-color: var(--backgr-color-dr-th);
+  width: 100vw;
+  z-index: -9;
+  min-height: 100vh;
 }
