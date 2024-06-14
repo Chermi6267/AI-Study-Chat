@@ -3,6 +3,7 @@ import { useLocalStorage } from "../hooks/useLocalStorage";
 
 export const ThemeContext = createContext();
 
+// Provider for handling theme state in app, dark or light
 export const ThemeProvider = ({ children }) => {
   const [isDarkMode, setIsDarkMode] = useLocalStorage("isDarkMode", false);
 

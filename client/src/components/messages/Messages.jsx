@@ -3,10 +3,12 @@ import MessageHandler from "./MessageHandler";
 import "./messages.css";
 import PreLoader from "../svg/PreLoader";
 
+// Messages component
 export default function Messages({ messages, loading, messagesError }) {
   const [messageScrollHeight, setMessageScrollHeight] = useState(0);
-
   const messageRef = useRef(null);
+
+  // Scroll processing for the message component
   useEffect(() => {
     if (messageRef.current && messageRef) {
       const element = messageRef.current;
@@ -23,32 +25,9 @@ export default function Messages({ messages, loading, messagesError }) {
       <div className="messages-container">
         {!loading ? (
           messagesError ? (
-            <h1
-              style={{
-                position: "absolute",
-                left: "20%",
-                top: "50%",
-                lineHeight: "2.5vh",
-                width: "50vw",
-                color: "tomato",
-                textAlign: "center",
-                transform: "translateX: -50% translateY: -50%",
-              }}
-            >
-              Бля, что-то пошло не так (●'◡'●)
-            </h1>
+            <h1 className="messages-error">Бля, что-то пошло не так (●'◡'●)</h1>
           ) : messages.length === 0 ? (
-            <h1
-              style={{
-                position: "absolute",
-                left: "20%",
-                top: "50%",
-                lineHeight: "2.5vh",
-                width: "50vw",
-                textAlign: "center",
-                transform: "translateX: -50% translateY: -50%",
-              }}
-            >
+            <h1 className="blank-message-list">
               Здесь, пока что, пусто, но Вам под силу это исправить (●'◡'●)
             </h1>
           ) : (

@@ -6,18 +6,14 @@ body {
   font-family: "Sofia Sans", sans-serif;
   font-size: clamp(14px, 5vw, 15px);
   color: var(--text-dr-th);
-  --gradient-dr-th-90deg: linear-gradient(
-    90deg,
-    #83f5e5 0%,
-    #00d8ff 45%,
-    #e761bd 100%
-  );
-  --gradient-dr-th-180deg: linear-gradient(
-    180deg,
-    #83f5e5 0%,
-    #00d8ff 45%,
-    #e761bd 100%
-  );
+  --gradient-dr-th-90deg: linear-gradient(90deg,
+      #83f5e5 0%,
+      #00d8ff 45%,
+      #e761bd 100%);
+  --gradient-dr-th-180deg: linear-gradient(180deg,
+      #83f5e5 0%,
+      #00d8ff 45%,
+      #e761bd 100%);
   --backgr-color-dr-th: #e8e2f0;
   --text-dr-th: #71727c;
   --color1-dr-th: #e2cbdb;
@@ -27,18 +23,14 @@ body {
 body.dark {
   font-family: "Sofia Sans", sans-serif;
   font-size: clamp(14px, 5vw, 15px);
-  --gradient-dr-th-90deg: linear-gradient(
-    90deg,
-    #fb7185 0%,
-    #b94fef 45%,
-    #6365f1 100%
-  );
-  --gradient-dr-th-180deg: linear-gradient(
-    180deg,
-    #fb7185 0%,
-    #b94fef 45%,
-    #6365f1 100%
-  );
+  --gradient-dr-th-90deg: linear-gradient(90deg,
+      #fb7185 0%,
+      #b94fef 45%,
+      #6365f1 100%);
+  --gradient-dr-th-180deg: linear-gradient(180deg,
+      #fb7185 0%,
+      #b94fef 45%,
+      #6365f1 100%);
   --backgr-color-dr-th: #2d2c3a;
   --text-dr-th: #ffffff;
   --color1-dr-th: #747182;
@@ -48,6 +40,5 @@ body.dark {
 .root-bg {
   background-color: var(--backgr-color-dr-th);
   width: 100vw;
-  z-index: -9;
   min-height: 100vh;
 }

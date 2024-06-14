@@ -96,10 +96,12 @@ class authController {
     }
   }
 
+  // Add phone controller
   async addPhone(req, res) {
     try {
-      const { id, username, email } = req.user;
+      const { id } = req.user;
       const { phone } = req.body;
+      // Validation of the phone add form
       const validationErrors = validationResult(req);
       if (validationErrors["errors"].length !== 0) {
         return res
@@ -107,20 +109,28 @@ class authController {
           .json({ message: validationErrors["errors"][0]["msg"] });
       }
 
-      const result = await authService.addPhone(id, phone, username, email);
+      const result = await authService.addPhone(id, phone);
 
-      res.cookie(
-        "refreshToken",
-        result[1],
-        JSON.parse(process.env.REFRESH_TOKEN_COOKIE_OPTIONS)
-      );
       res.send({
         message: "Phone has been added successfully",
-        data: { phone, accessToken: result[0] },
+        data: phone,
       });
     } catch (error) {
       console.log(error);
       res.status(500).send("Phone adding error");
+    }
+  }
+
+  // Getting user info controller
+  async getUserInfo(req, res) {
+    try {
+      const { id } = req.user;
+      const result = await authService.getUserInfo(id);
+
+      res.json(result);
+    } catch (error) {
+      console.log(error);
+      res.status(500).send("Getting user info error");
     }
   }
 }

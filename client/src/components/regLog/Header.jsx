@@ -4,6 +4,7 @@ import logo_lg_th from "../About/img/logo_lg_th.png";
 import { motion } from "framer-motion";
 import { ThemeContext } from "../providers/ThemeProvider";
 
+// Header component
 export default function Header({ isActive, target }) {
   const className = "header " + target;
 
@@ -18,7 +19,6 @@ export default function Header({ isActive, target }) {
           ? { opacity: 1, columnGap: "20px" }
           : { opacity: 0, columnGap: 0 }
       }
-      exit={{ opacity: 0, columnGap: 0 }}
       transition={{ delay: 0.1 }}
     >
       <img

@@ -22,11 +22,11 @@
   min-width: 90%;
 }
 
-.messages-container > :last-child {
+.messages-container> :last-child {
   padding-bottom: 3%;
 }
 
-.messages-container > :last-child .user-chat-arrow {
+.messages-container> :last-child .user-chat-arrow {
   padding-bottom: 3%;
 }
 
@@ -44,6 +44,7 @@
   background-color: var(--color2-dr-th);
   align-items: flex-end;
   max-width: 75%;
+  line-height: normal;
 }
 
 .bot-message-container p {
@@ -81,6 +82,7 @@
   background-color: var(--color1-dr-th);
   align-items: flex-end;
   word-break: break-word;
+  line-height: normal;
 }
 
 .user-chat-arrow {
@@ -90,4 +92,23 @@
   fill: var(--color1-dr-th);
   width: 9px;
   height: 17px;
+}
+
+.messages-error {
+  position: absolute;
+  left: 20%;
+  top: 50%;
+  line-height: 2.5vh;
+  width: 50vw;
+  color: tomato;
+  text-align: center;
+}
+
+.blank-message-list {
+  position: absolute;
+  left: 20%;
+  top: 50%;
+  line-height: normal;
+  width: 50vw;
+  text-align: center;
 }

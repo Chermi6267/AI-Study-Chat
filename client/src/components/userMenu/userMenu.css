@@ -118,9 +118,7 @@
 }
 
 .user-menu-phone-input {
-  min-width: 25vw;
-  width: 100%;
-  max-width: 35vw;
+  width: calc(100% - 1.3em);
   max-height: 10px;
   overflow: auto;
   border-radius: 25vw;

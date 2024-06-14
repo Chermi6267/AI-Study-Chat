@@ -11,7 +11,9 @@ import { OrientationProvider } from "./components/providers/OrientationProvider"
 import { SelectedChatProvider } from "./components/providers/SelectedChatProvider";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
+
 root.render(
+  // Setting providers
   <Provider store={store}>
     <React.StrictMode>
       <ThemeProvider>

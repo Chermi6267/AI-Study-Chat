@@ -15,18 +15,20 @@ import GetStarted from "../regLog/GetStarted";
 import ChatService from "../../services/chatServices";
 import { SelectedChatContext } from "../providers/SelectedChatProvider";
 
+// Main page component
 export default function Main() {
   const { isAuth } = useAuth();
   const inputContRef = useRef();
-  const [navBarIsRight, setNavBarIsRight] = useContext(OrientationContext);
-  const [messageNavbarHeight, setMessageNavbarHeight] = useState(0);
+  const [navBarIsRight] = useContext(OrientationContext);
   const [messagesLoading, setMessagesLoading] = useState(true);
   const [messages, setMessages] = useState([]);
   const [messagesError, setMessagesError] = useState(false);
   const [chatsMenuTrigger, setChatsMenuTrigger] = useState();
   const [selectedChat] = useContext(SelectedChatContext);
   const { id } = useAuth();
+  const messageNavRef = useRef();
 
+  // Uploading messages from the server
   useEffect(() => {
     setMessagesLoading(true);
     ChatService.chatMessages(selectedChat, id)
@@ -41,21 +43,7 @@ export default function Main() {
       });
   }, [selectedChat, id]);
 
-  useEffect(() => {
-    if (inputContRef.current) {
-      const resizeHandler = () => {
-        setMessageNavbarHeight(
-          window.innerHeight - inputContRef.current.clientHeight
-        );
-      };
-      window.addEventListener("resize", resizeHandler);
-      resizeHandler();
-      return () => {
-        window.removeEventListener("resize", resizeHandler);
-      };
-    }
-  }, [inputContRef, isAuth]);
-
+  // Messages component wrapped in useMemo
   const messagesComponent = useMemo(
     () => (
       <Messages
@@ -67,20 +55,13 @@ export default function Main() {
     [messages, messagesLoading, messagesError]
   );
 
+  // Navigation component wrapped in useMemo
   const navigationMenuComponent = useMemo(
-    () => (
-      <NavigationMenu
-        messageNavbarHeight={messageNavbarHeight}
-        navBarOrientation={navBarIsRight}
-        inputContRef={inputContRef}
-        setNavBarIsRight={() => {
-          setNavBarIsRight(!navBarIsRight);
-        }}
-      />
-    ),
-    [messageNavbarHeight, navBarIsRight, inputContRef, setNavBarIsRight]
+    () => <NavigationMenu parentRef={messageNavRef} />,
+    []
   );
 
+  // Checking if the user is logged in
   if (!isAuth) {
     return <GetStarted />;
   }
@@ -97,25 +78,25 @@ export default function Main() {
             />
             <div className="main-page-container">
               <Cap />
+
               <div
+                ref={messageNavRef}
                 className="message-navbar"
                 style={{
                   flexDirection: navBarIsRight ? "row" : "row-reverse",
-                  height: messageNavbarHeight,
                 }}
               >
                 {messagesComponent}
                 {navigationMenuComponent}
               </div>
-              {
-                <Input
-                  messagesError={messagesError}
-                  inputContRef={inputContRef}
-                  messages={messages}
-                  setChatsMenuTrigger={(v) => setChatsMenuTrigger(v)}
-                  setMessages={(v) => setMessages(v)}
-                />
-              }
+
+              <Input
+                messagesError={messagesError}
+                inputContRef={inputContRef}
+                messages={messages}
+                setChatsMenuTrigger={(v) => setChatsMenuTrigger(v)}
+                setMessages={(v) => setMessages(v)}
+              />
             </div>
           </IMGMenuProvider>
         </ChatMenuProvider>

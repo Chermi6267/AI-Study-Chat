@@ -10,6 +10,7 @@ import { useAuth } from "../hooks/useAuth";
 import PreLoader from "../svg/PreLoader";
 import { SelectedChatContext } from "../providers/SelectedChatProvider";
 
+// Chats menu component
 export default function ChatsMenu({ chatsMenuTrigger, setChatsMenuTrigger }) {
   const [isChatMenuOpen, setIsChatMenuOpen] = useContext(ChatMenuContext);
   const [navBarIsRight] = useContext(OrientationContext);
@@ -18,11 +19,14 @@ export default function ChatsMenu({ chatsMenuTrigger, setChatsMenuTrigger }) {
   const [loading, setLoading] = useState(true);
   const [selectedChat, selectChat] = useContext(SelectedChatContext);
   const [error, setError] = useState(null);
+  const chatMenuRef = useRef(null);
 
+  // Chat loader handler
   const loadChatsHandler = () => {
     ChatService.chatList()
       .then((res) => {
         setChatsData(res.data);
+        console.log(res);
         setLoading(false);
       })
       .catch((error) => {
@@ -32,16 +36,19 @@ export default function ChatsMenu({ chatsMenuTrigger, setChatsMenuTrigger }) {
       });
   };
 
+  // Uploading chats from the server
   useEffect(() => {
     loadChatsHandler();
   }, [id, selectedChat]);
 
+  // Updating chat list
   useEffect(() => {
     if (chatsMenuTrigger) {
       loadChatsHandler();
     }
   }, [chatsMenuTrigger]);
 
+  // Animation variant for chats menu
   const divVariants1 = {
     hidden: {
       transform: navBarIsRight
@@ -55,6 +62,7 @@ export default function ChatsMenu({ chatsMenuTrigger, setChatsMenuTrigger }) {
     },
   };
 
+  // Animation variant for new chat button
   const newChatVariants = {
     hidden: {
       translateY: -30,
@@ -66,7 +74,7 @@ export default function ChatsMenu({ chatsMenuTrigger, setChatsMenuTrigger }) {
     },
   };
 
-  const chatMenuRef = useRef(null);
+  // Handler for closing the chat menu when the user clicks outside of it
   useClickOutside(chatMenuRef, () => {
     if (isChatMenuOpen) {
       setTimeout(() => {

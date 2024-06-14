@@ -5,6 +5,7 @@
   flex-direction: column;
   height: 100vh;
   overflow: hidden;
+  justify-content: space-between;
 }
 
 .main-wrapper {
@@ -15,4 +16,23 @@
 
 .message-navbar {
   display: flex;
+  height: calc(100% - 60px - 2%);
+}
+
+@media (max-height: 600px) {
+  .message-navbar {
+    height: calc(100% - 60px - 3%);
+  }
+}
+
+@media (max-height: 400px) {
+  .message-navbar {
+    height: calc(100% - 60px - 4%);
+  }
+}
+
+@media (max-height: 400px) {
+  .message-navbar {
+    height: calc(100% - 60px - 5%);
+  }
 }

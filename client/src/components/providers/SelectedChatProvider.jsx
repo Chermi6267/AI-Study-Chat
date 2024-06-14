@@ -3,6 +3,7 @@ import { useLocalStorage } from "../hooks/useLocalStorage";
 
 export const SelectedChatContext = createContext();
 
+// Provider for handling selected chat
 export const SelectedChatProvider = ({ children }) => {
   const [selectedChat, selectChat] = useLocalStorage("selectedChat", false);
 

@@ -3,6 +3,7 @@ import { useLocalStorage } from "../hooks/useLocalStorage";
 
 export const OrientationContext = createContext();
 
+// Provider for handling orientation in app, for right hand or for left
 export const OrientationProvider = ({ children }) => {
   const [navBarIsRight, setNavBarIsRight] = useLocalStorage(
     "navBarOrientation",

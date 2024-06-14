@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 
 export default function Sun({ setTheme, showAll, divVariants }) {
   return (
-    <motion.div
+    <motion.li
       variants={divVariants}
       initial="hidden"
       animate={showAll ? "visible" : "hidden"}
@@ -45,6 +45,6 @@ export default function Sun({ setTheme, showAll, divVariants }) {
           strokeLinecap="round"
         />
       </svg>
-    </motion.div>
+    </motion.li>
   );
 }

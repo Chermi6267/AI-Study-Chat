@@ -64,6 +64,7 @@ class authService {
       };
     } catch (error) {
       console.error(error);
+      throw error;
     }
   }
 
@@ -128,6 +129,7 @@ class authService {
       };
     } catch (error) {
       console.error(error);
+      throw error;
     }
   }
 
@@ -138,6 +140,7 @@ class authService {
       return token;
     } catch (error) {
       console.error(error);
+      throw error;
     }
   }
 
@@ -173,6 +176,7 @@ class authService {
       };
     } catch (error) {
       console.error(error);
+      throw error;
     }
   }
 
@@ -188,30 +192,27 @@ class authService {
       };
     } catch (error) {
       console.error(error);
+      throw error;
     }
   }
 
-  async addPhone(userID, phone, username, email) {
+  // Service for adding phone to user
+  async addPhone(userID, phone) {
     try {
       const result = await authRepository.addPhone(userID, phone);
-      const newAccessToken = await tokensService.generateAccessToken(
-        userID,
-        username,
-        email,
-        phone
-      );
-      const newRefreshToken = await tokensService.generateRefreshToken(
-        userID,
-        username,
-        email,
-        phone
-      );
-      const test = await tokensRepository.updateRefreshSession(
-        userID,
-        newRefreshToken
-      );
 
-      return [newAccessToken, newRefreshToken];
+      return result;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  // Service for getting user's info
+  async getUserInfo(userID) {
+    try {
+      const result = await authRepository.getUserInfo(userID);
+
+      return result;
     } catch (error) {
       throw error;
     }

@@ -19,41 +19,48 @@ import Sun from "../svg/Sun";
 import Moon from "../svg/Moon";
 import { motion, useInView } from "framer-motion";
 
+// About page component
 export default function About() {
   const [isDarkMode, setIsDarkMode] = useContext(ThemeContext);
 
+  // Redirect processing to the main page
   const navigate = useNavigate();
   const redirect = () => {
     navigate("/");
   };
 
+  // Animation processing during scrolling
   const logoRef = useRef(null);
   const isLogoInView = useInView(logoRef, {
     once: true,
-    amount: 0.1,
+    amount: 0.2,
   });
 
   const opportunitiesRef = useRef(null);
   const isOpportunitiesInView = useInView(opportunitiesRef, {
     once: true,
-    amount: 0.1,
+    amount: 0.2,
   });
 
   const stackRef = useRef(null);
-  const isStackInView = useInView(stackRef, { once: true, amount: 0.1 });
+  const isStackInView = useInView(stackRef, {
+    once: true,
+    amount: 0.2,
+  });
 
   const AIStudyChatRef = useRef(null);
   const isAIStudyChatInView = useInView(AIStudyChatRef, {
     once: true,
-    amount: 0.1,
+    amount: 0.2,
   });
 
   const meRef = useRef(null);
   const isMeInView = useInView(meRef, {
     once: true,
-    amount: 0.1,
+    amount: 0.2,
   });
 
+  // Animation variant for the info element leaving on the left
   const leftVariants = {
     hidden: {
       opacity: 0,
@@ -65,6 +72,7 @@ export default function About() {
     },
   };
 
+  // Animation variant for the info element leaving on the right
   const rightVariants = {
     hidden: {
       opacity: 0,
@@ -76,6 +84,7 @@ export default function About() {
     },
   };
 
+  // Animation variant for theme toggle
   const divVariants = {
     hidden: {
       visibility: "hidden",
@@ -93,7 +102,7 @@ export default function About() {
 
   return (
     <div className="about-cont">
-      <div
+      <ul
         className="about-theme-toggle"
         onClick={() => {
           setIsDarkMode(!isDarkMode);
@@ -104,7 +113,7 @@ export default function About() {
         ) : (
           <Moon divVariants={divVariants} showAll={true} />
         )}
-      </div>
+      </ul>
 
       <motion.h1
         initial="hidden"
@@ -249,24 +258,10 @@ export default function About() {
         AI Study Chat
       </button>
 
-      <footer
-        style={{
-          height: "10%",
-          width: "100vw",
-          textAlign: "center",
-          paddingBottom: 15,
-          lineHeight: "normal",
-          color: "var(--text-dr-th)",
-        }}
-      >
+      <footer className="about-footer">
         05.06.2024<br></br>
         &copy; AI Study Chat<br></br>
-        <a
-          style={{ color: "var(--text-dr-th)" }}
-          href="https://t.me/chermi6267"
-        >
-          @chermi6267
-        </a>
+        <a href="https://t.me/chermi6267">@chermi6267</a>
       </footer>
     </div>
   );

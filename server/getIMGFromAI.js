@@ -19,7 +19,7 @@ async function getIMGFromAI(imgUuid, accessToken) {
 
   const imgFolderPath = path.join(__dirname, "public", "img");
 
-  // Проверяем, существует ли папка img, если нет, то создаем ее
+  // Check if the "img" folder exists. If it doesn't, create it
   if (!fs.existsSync(imgFolderPath)) {
     fs.mkdirSync(imgFolderPath, { recursive: true });
   }
@@ -33,7 +33,6 @@ async function getIMGFromAI(imgUuid, accessToken) {
       })
       .catch((error) => {
         console.log(error);
-        // В случае ошибки отклоняем обещание
         reject(error);
       });
   });

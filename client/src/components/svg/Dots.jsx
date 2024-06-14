@@ -57,7 +57,7 @@ export default function Dots({
     },
   };
   return (
-    <motion.div
+    <motion.li
       ref={dotsRef}
       variants={divVariants}
       initial="hidden"
@@ -100,6 +100,6 @@ export default function Dots({
           strokeLinecap="round"
         />
       </motion.svg>
-    </motion.div>
+    </motion.li>
   );
 }

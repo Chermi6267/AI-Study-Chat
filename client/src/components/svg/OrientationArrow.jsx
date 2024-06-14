@@ -27,7 +27,7 @@ export default function OrientationArrow({
   };
 
   return (
-    <motion.div
+    <motion.li
       variants={divVariants}
       initial="hidden"
       animate={showAll ? "visible" : "hidden"}
@@ -54,6 +54,6 @@ export default function OrientationArrow({
           strokeLinecap="round"
         />
       </motion.svg>
-    </motion.div>
+    </motion.li>
   );
 }

@@ -14,8 +14,9 @@ export default function App() {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
   const [isDarkMode] = useContext(ThemeContext);
-
   const favicon = document.getElementById("favicon");
+
+  // Changing favicon icon
   useEffect(() => {
     if (isDarkMode) {
       favicon.href = "./logo/logo.png";
@@ -24,6 +25,7 @@ export default function App() {
     }
   }, [isDarkMode, favicon]);
 
+  // The first authentication check
   useEffect(() => {
     if (!!localStorage.getItem("token")) {
       axios
@@ -33,7 +35,10 @@ export default function App() {
           { withCredentials: true }
         )
         .then((response) => {
+          // Storing access token
           localStorage.setItem("token", response.data["accessToken"]);
+
+          // Storing user info
           dispatch(
             setUser({
               id: response.data["id"],
@@ -43,6 +48,7 @@ export default function App() {
               phone: response.data["phone"],
             })
           );
+
           setLoading(false);
         })
         .catch((error) => {
@@ -56,6 +62,7 @@ export default function App() {
 
   return (
     <div className="root-bg">
+      {/* Page navigation */}
       <Router>
         <Routes>
           <Route exact path="/" element={loading ? <Preloader /> : <Main />} />

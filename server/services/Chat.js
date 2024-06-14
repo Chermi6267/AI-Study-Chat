@@ -5,15 +5,18 @@ const fs = require("fs");
 const { v4: uuidv4 } = require("uuid");
 
 class ChatService {
+  // Service for getting all chats
   async chatList(userID) {
     try {
       const chats = await ChatRepository.getChats(userID);
+
       return chats;
     } catch (error) {
       throw error;
     }
   }
 
+  // Service for getting messages by chat ID
   async chatMessages(chatID, userID) {
     try {
       const messages = await ChatRepository.getMessages(chatID, userID);
@@ -24,6 +27,7 @@ class ChatService {
     }
   }
 
+  // Service for deleting chat
   async deleteChat(chatId) {
     try {
       const result = await ChatRepository.deleteChat(chatId);
@@ -35,6 +39,7 @@ class ChatService {
     }
   }
 
+  // Service for processing text message
   async textMessage(chatID, userID, textForUser, textForAI, imgPath) {
     try {
       // Checking if there is a chat with certain chatID
@@ -44,8 +49,10 @@ class ChatService {
             ? textForAI.slice(0, 50) + (textForAI.length > 50 ? "... " : "")
             : textForUser.slice(0, 50) +
               (textForUser.length > 50 ? "... " : "");
+
         const chat = await ChatRepository.createChat(userID, title);
         chatID = chat.insertId;
+        console.log(chat, 1);
       }
 
       // Saving user request
@@ -71,7 +78,7 @@ class ChatService {
       );
 
       // Making request to Sber GigaChat with the last 7 messages
-      const aiResponse = await AIService.askAI(messages.slice(-7), null);
+      const aiResponse = await AIService.askAI(messages.slice(-7));
 
       // Checking if the response contains an image
       var imgRegex = /<img src=".*?" fuse="(true|false)"\/>/;
@@ -120,32 +127,36 @@ class ChatService {
         };
       }
     } catch (error) {
-      throw new Error("Что-то пошло не так");
       console.log(error);
+      throw new Error("Что-то пошло не так");
     }
   }
 
+  // Service for processing image message
   async imgMessage(file, text, chatID, userID) {
-    const allowedFileExt = [
-      "image/jpeg",
-      "image/png",
-      "image/bmp",
-      "image/webp",
-    ];
-
-    if (!allowedFileExt.includes(file.mimetype)) {
-      throw new Error("INCORRECT FILE EXTENSION");
-    }
-
     try {
+      const allowedFileExt = [
+        "image/jpeg",
+        "image/bmp",
+        "image/webp",
+        "image/png",
+      ];
+
+      // Checking for allowed file extension
+      if (!allowedFileExt.includes(file.mimetype)) {
+        throw new Error("INCORRECT FILE EXTENSION");
+      }
+
       const imgUuid = uuidv4();
 
+      // Creating images folder if it doesn't exist
       const imgFolderPath = path.join(__dirname, "..", "public", "img");
       if (!fs.existsSync(imgFolderPath)) {
         fs.mkdirSync(imgFolderPath, { recursive: true });
       }
-      const imagePath = path.join(imgFolderPath, `${imgUuid}.jpg`);
 
+      // Saving image
+      const imagePath = path.join(imgFolderPath, `${imgUuid}.jpg`);
       fs.writeFileSync(imagePath, file.data);
 
       const textForAI =
@@ -166,6 +177,7 @@ class ChatService {
     }
   }
 
+  // Service for getting image from server
   async getIMG(imageName) {
     // The path to the folder with images
     const imagePath = path.join("public", "img", imageName);

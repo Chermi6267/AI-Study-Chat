@@ -33,6 +33,7 @@ async function askAI(accessToken, messages, maxTokens) {
     },
     data: data,
   };
+
   const response = await axios(config);
   return response.data;
 }

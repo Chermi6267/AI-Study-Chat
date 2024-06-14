@@ -8,6 +8,7 @@ const initialState = {
   phone: null,
 };
 
+// Creating slice
 const userSlice = createSlice({
   name: "user",
   initialState,

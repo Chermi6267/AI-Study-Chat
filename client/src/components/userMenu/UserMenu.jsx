@@ -1,107 +1,111 @@
-import React, { useContext, useRef, useState } from "react";
+import React, { useContext, useRef, useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import Ava from "../svg/Ava";
-import { UserMenuContext } from "../providers/UserMenuProvider";
-import { useClickOutside } from "../hooks/useClickOutside";
 import Phone from "../svg/Phone";
 import Email from "../svg/Email";
-import "./userMenu.css";
-import { useAuth } from "../hooks/useAuth";
 import AuthServices from "../../services/authServices";
+import { useClickOutside } from "../hooks/useClickOutside";
+import { useAuth } from "../hooks/useAuth";
 import { useDispatch } from "react-redux";
 import { removeUser, setUser } from "../../store/slices/userSlice";
+import { UserMenuContext } from "../providers/UserMenuProvider";
 import { SelectedChatContext } from "../providers/SelectedChatProvider";
+import "./userMenu.css";
 
-export default function UserMenu() {
+// User menu component
+const UserMenu = () => {
   const { id, email, username, phone, token } = useAuth();
-  const profInfo = {
+  const [profInfo, setProfInfo] = useState({
     userName: username,
     userEmail: email,
     userPhone: phone,
-  };
-
+  });
   const [isUserMenuOpen, setIsUserMenuOpen] = useContext(UserMenuContext);
   const [, selectChat] = useContext(SelectedChatContext);
   const dispatch = useDispatch();
   const [phoneValue, setPhoneValue] = useState("");
   const phoneInputRef = useRef(null);
+  const userMenuRef = useRef(null);
 
-  const handlerLogout = (username, password) => {
+  // Uploading user's phone number
+  useEffect(() => {
+    if (!profInfo.userPhone) {
+      AuthServices.getUserInfo()
+        .then((res) => {
+          setProfInfo((prevInfo) => ({
+            ...prevInfo,
+            userPhone: res.data["phone"],
+          }));
+        })
+        .catch(console.error);
+    }
+  }, [profInfo.userPhone]);
+
+  // User logout handler
+  const handleLogout = () => {
     selectChat(false);
-    AuthServices.logout(username, password)
-      .then((response) => {
+    AuthServices.logout(username, token)
+      .then(() => {
         dispatch(removeUser());
-        console.log(`signed out`);
+        console.log("signed out");
         localStorage.removeItem("token");
       })
-      .catch((error) => {
-        console.log(error);
-      });
+      .catch(console.error);
   };
 
-  const handlerAddPhone = () => {
+  // Processing the addition of a user's phone number
+  const handleAddPhone = (e) => {
     AuthServices.addPhone(phoneValue)
       .then((response) => {
-        localStorage.setItem("token", response.data["data"]["accessToken"]);
-        dispatch(
-          setUser({
-            phone: response.data["data"]["phone"],
-            id: id,
-            email: email,
-            username: username,
-            token: response.data["data"]["accessToken"],
-          })
-        );
-        if (phoneInputRef && phoneInputRef.current) {
+        const updatedPhone = response.data["data"];
+        // Updating user info
+        dispatch(setUser({ phone: updatedPhone, id, email, username, token }));
+        setProfInfo((prevInfo) => ({
+          ...prevInfo,
+          userPhone: updatedPhone,
+        }));
+
+        // Showing the user that everything is fine
+        if (phoneInputRef.current) {
           phoneInputRef.current.style.outline = "2px solid greenyellow";
           setTimeout(() => {
-            phoneInputRef.current.style.outline = "0px solid greenyellow";
+            phoneInputRef.current.style.outline = "none";
           }, 800);
         }
       })
       .catch((error) => {
-        if (phoneInputRef && phoneInputRef.current) {
+        if (phoneInputRef.current) {
           phoneInputRef.current.style.outline = "2px solid tomato";
-          phoneInputRef.current.focus();
+          if (e.code === "Enter") {
+            phoneInputRef.current.focus();
+          }
         }
-        console.log(error);
+        console.error(error);
       });
   };
 
-  const divVariants1 = {
-    hidden: {
-      transform: "translate(-50%, -400%)",
-    },
-    visible: {
-      transform: "translate(-50%, -75%)",
-    },
-  };
-
-  const userMenuRef = useRef(null);
+  // Handler for closing the user menu when the user clicks outside of it
   useClickOutside(userMenuRef, () => {
     if (isUserMenuOpen) {
       setTimeout(() => {
         setIsUserMenuOpen(false);
-        if (phoneInputRef && phoneInputRef.current) {
-          phoneInputRef.current.style.outline = "0px solid tomato";
-          phoneInputRef.current.innerText =
-            profInfo.userPhone !== "" && profInfo.userPhone !== null
-              ? profInfo.userPhone
-              : "";
+        if (phoneInputRef.current) {
+          phoneInputRef.current.style.outline = "none";
         }
       }, 50);
     }
   });
 
-  const newChatVariants = {
-    hidden: {
-      translateY: -30,
-      opacity: 0,
-    },
-    visible: {
-      translateY: 1,
-      opacity: 1,
-    },
+  // Animation variant for user menu
+  const divVariants1 = {
+    hidden: { transform: "translate(-50%, -400%)" },
+    visible: { transform: "translate(-50%, -75%)" },
+  };
+
+  // Animation variant for logout button
+  const userLogoutVariants = {
+    hidden: { translateY: -30, opacity: 0 },
+    visible: { translateY: 1, opacity: 1 },
   };
 
   return (
@@ -120,7 +124,7 @@ export default function UserMenu() {
         <div className="info-container">
           <Email />
           <div style={{ maxWidth: "calc(100% - 1.3em)" }}>
-            <h2>{profInfo.userEmail}</h2>
+            <h2 style={{ padding: "1.5vw" }}>{profInfo.userEmail}</h2>
           </div>
         </div>
         <div className="info-container">
@@ -134,21 +138,18 @@ export default function UserMenu() {
               placeholder="Телефон"
               onInput={(e) => {
                 setPhoneValue(e.target.innerText);
-
-                if (phoneInputRef && phoneInputRef.current) {
-                  phoneInputRef.current.style.outline = "0px solid tomato";
+                if (phoneInputRef.current) {
+                  phoneInputRef.current.style.outline = "none";
                 }
               }}
-              onBlur={() => {
-                handlerAddPhone();
-              }}
+              onBlur={handleAddPhone}
               onKeyDown={(e) => {
                 if (e.code === "Enter") {
                   e.preventDefault();
-                  if (phoneInputRef && phoneInputRef.current) {
+                  if (phoneInputRef.current) {
                     phoneInputRef.current.blur();
                   }
-                  handlerAddPhone();
+                  handleAddPhone(e);
                 }
               }}
             >
@@ -161,12 +162,10 @@ export default function UserMenu() {
         <motion.div
           style={{ width: "80%" }}
           initial="hidden"
-          variants={newChatVariants}
+          variants={userLogoutVariants}
           animate={isUserMenuOpen ? "visible" : "hidden"}
           transition={{ delay: 0.15, type: "just" }}
-          onClick={() => {
-            handlerLogout();
-          }}
+          onClick={handleLogout}
         >
           <button className="user-menu-btn" style={{ color: "tomato" }}>
             Выйти
@@ -175,4 +174,6 @@ export default function UserMenu() {
       </div>
     </motion.div>
   );
-}
+};
+
+export default UserMenu;

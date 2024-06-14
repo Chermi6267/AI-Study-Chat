@@ -6,10 +6,12 @@ import { IMGMenuContext } from "../providers/IMGMenuProvider";
 import { useClickOutside } from "../hooks/useClickOutside";
 import { motion } from "framer-motion";
 
+// Image uploader menu component
 function IMGMenu({ imgUploadHandler, file }) {
   const [isIMGMenuOpen, setIsIMGMenuOpen] = useContext(IMGMenuContext);
-
   const IMGMenuRef = useRef(null);
+
+  // Handler for closing the image menu when the user clicks outside of it
   useClickOutside(IMGMenuRef, () => {
     if (isIMGMenuOpen) {
       setTimeout(() => {
@@ -18,6 +20,7 @@ function IMGMenu({ imgUploadHandler, file }) {
     }
   });
 
+  // Animation variant for image menu
   const imgMenuVariants = {
     hidden: {
       top: "150%",
@@ -40,6 +43,7 @@ function IMGMenu({ imgUploadHandler, file }) {
           className="img-upload-btn"
           onClick={imgUploadHandler}
           style={
+            // Uploading temporary file URL as background image
             file ? { backgroundImage: `url(${URL.createObjectURL(file)})` } : {}
           }
         >

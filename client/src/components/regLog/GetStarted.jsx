@@ -3,6 +3,7 @@ import Header from "./Header";
 import { useNavigate } from "react-router-dom";
 
 export default function GetStarted() {
+  // Redirect processing to url
   const navigate = useNavigate();
   const redirect = (url) => {
     navigate(url);
@@ -34,24 +35,10 @@ export default function GetStarted() {
           </button>
         </div>
       </div>
-      <footer
-        style={{
-          height: "10%",
-          width: "100vw",
-          textAlign: "center",
-          paddingBottom: 15,
-          lineHeight: "normal",
-          color: "var(--text-dr-th)",
-        }}
-      >
+      <footer className="log-reg-footer">
         05.06.2024<br></br>
         &copy; AI Study Chat<br></br>
-        <a
-          style={{ color: "var(--text-dr-th)" }}
-          href="https://t.me/chermi6267"
-        >
-          @chermi6267
-        </a>
+        <a href="https://t.me/chermi6267">@chermi6267</a>
       </footer>
     </div>
   );

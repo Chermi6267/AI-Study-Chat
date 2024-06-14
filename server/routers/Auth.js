@@ -38,14 +38,20 @@ router.post(
   ],
   controller.login
 );
+
 router.put(
   "/add-phone",
   isAuthenticated,
   [check("phone", "Номер телефона должен быть корректным").isMobilePhone()],
   controller.addPhone
 );
-router.get("/all_users", isAuthenticated, controller.getAllUsers);
+
+router.get("/get-user-info", isAuthenticated, controller.getUserInfo);
+
+// router.get("/all_users", isAuthenticated, controller.getAllUsers);
+
 router.get("/logout", controller.logout);
+
 router.post("/refreshToken", controller.refreshAccessToken);
 
 module.exports = router;

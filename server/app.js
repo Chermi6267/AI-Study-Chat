@@ -19,9 +19,10 @@ app.use("/chat", chatRouter);
 
 const server = http.createServer(app);
 
+// Simple check for server start
 app.get("/", async (req, res) => {
   try {
-    const result = await db.query("SELECT * FROM users");
+    const result = "THE SERVER HAS STARTED SUCCESSFULLY";
     res.send(result);
   } catch (error) {
     console.error(error);

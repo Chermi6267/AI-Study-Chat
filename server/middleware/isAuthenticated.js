@@ -13,16 +13,20 @@ async function isAuthenticated(req, res, next) {
   }
 
   try {
+    // Check access token
     const userData = await tokensService.validateAccessToken(
       token.split(" ")[1]
     );
+
     if (!userData) {
       return res
         .status(401)
         .json({ message: "The authentication token is incorrect" });
     }
+
     req.user = userData;
 
+    // The following function is carried out
     next();
   } catch (error) {
     return res

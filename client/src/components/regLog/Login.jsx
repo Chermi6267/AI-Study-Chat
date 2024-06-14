@@ -5,21 +5,24 @@ import AuthServices from "../../services/authServices";
 import { useDispatch } from "react-redux";
 import { setUser } from "../../store/slices/userSlice";
 import { useNavigate } from "react-router-dom";
+import Dots from "../Dots/Dots";
 
+// Login page component
 export default function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState("");
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
-
   const [isPassword, setIsPassword] = useState(false);
 
+  // Redirect processing to url
   const navigate = useNavigate();
   const redirect = (url) => {
     navigate(url);
   };
 
+  // Show/hide password
   useEffect(() => {
     const password =
       document.querySelector("#password1") ||
@@ -36,6 +39,7 @@ export default function Login() {
     }
   }, [isPassword]);
 
+  // Setting and validating username in form
   const usernameChangeHandler = (e) => {
     setUsername(e.target.value);
     if (e.target.value === "") {
@@ -45,6 +49,7 @@ export default function Login() {
     }
   };
 
+  // Setting and validating password in form
   const passwordChangeHandler = (e) => {
     setPassword(e.target.value);
     if (e.target.value === "") {
@@ -54,6 +59,7 @@ export default function Login() {
     }
   };
 
+  // Handling user login
   const handleLogin = (username, password) => {
     setLoading(true);
     AuthServices.login(username, password)
@@ -61,6 +67,7 @@ export default function Login() {
         setUsername("");
         setPassword("");
         setLoading(false);
+        // Storing logged in user
         dispatch(
           setUser({
             id: response.data.data["id"],
@@ -71,6 +78,7 @@ export default function Login() {
           })
         );
         console.log(`${response.data.data["username"]} signed in`);
+        // Storing access token
         localStorage.setItem("token", response.data.data["access_token"]);
         redirect("/");
       })
@@ -84,28 +92,6 @@ export default function Login() {
         console.log(error);
       });
   };
-
-  const [dots, setDots] = useState(".");
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setDots((prevDots) => {
-        switch (prevDots) {
-          case ".":
-            return "..";
-          case "..":
-            return "...";
-          case "...":
-            return "....";
-          case "....":
-            return ".";
-          default:
-            return ".";
-        }
-      });
-    }, 300);
-
-    return () => clearInterval(interval);
-  }, []);
 
   return (
     <div>
@@ -165,7 +151,11 @@ export default function Login() {
           }}
           className="submit-btn"
         >
-          {loading ? <p className="dots">{dots}</p> : "Войти"}
+          {loading ? (
+            <p className="dots">{<Dots text={"Вход"} intervalTime={300} />}</p>
+          ) : (
+            "Войти"
+          )}
         </button>
       </form>
     </div>

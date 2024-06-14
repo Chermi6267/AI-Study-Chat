@@ -4,6 +4,7 @@ import { UserMenuContext } from "../providers/UserMenuProvider";
 import { ChatMenuContext } from "../providers/ChatMenuProvider";
 import "./cap.css";
 
+// Cap component
 export default function Cap() {
   const [isUserMenuOpen] = useContext(UserMenuContext);
   const [isChatMenuOpen] = useContext(ChatMenuContext);

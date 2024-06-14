@@ -160,9 +160,20 @@
 }
 
 .dots {
-  max-width: 38px;
   max-height: 15px;
   height: 15px;
-  width: 38px;
-  font-weight: 800;
+  font-weight: 600;
+}
+
+.log-reg-footer {
+  height: 10%;
+  width: 100vw;
+  text-align: center;
+  padding-bottom: 15;
+  line-height: normal;
+  color: var(--text-dr-th);
+}
+
+.log-reg-footer a {
+  color: var(--text-dr-th);
 }

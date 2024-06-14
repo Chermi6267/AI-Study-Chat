@@ -10,49 +10,65 @@ import User from "../svg/User";
 import { ThemeContext } from "../providers/ThemeProvider";
 import { OrientationContext } from "../providers/OrientationProvider";
 import "./navBar.css";
+import { useLocalStorage } from "../hooks/useLocalStorage";
 
-export default function NavigationMenu({ messageNavbarHeight }) {
+// Navigation component
+export default function NavigationMenu({ parentRef }) {
   const [showAll, setShowAll] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useContext(ThemeContext);
+  const [navBarIsRight, setNavBarIsRight] = useContext(OrientationContext);
+  const dotsRef = useRef(null);
+  const [navHeight, setNavHeight] = useState(
+    "calc(clamp(20px, 6vw, 25px) + clamp(4px, 1vh, 7px) + clamp(4px, 1vh, 7px) + 0.5%)"
+  );
+  const [navBarY, setNavBarY] = useLocalStorage(
+    "navBarY",
+    window.innerHeight * 0.05
+  );
+  const navBarRef = useRef(null);
+
+  // Navigation menu switch
   const toggleVisibility = () => {
     setShowAll(!showAll);
   };
 
-  const [isDarkMode, setIsDarkMode] = useContext(ThemeContext);
-  const [navBarIsRight, setNavBarIsRight] = useContext(OrientationContext);
+  // Drag limiter for the navigation menu
+  const [constraints, setConstraints] = useState({
+    top: 0,
+    left: 0,
+    bottom: 0,
+    right: 0,
+  });
 
-  const dotsRef = useRef(null);
-  const [navHeight, setNavHeight] = useState(48);
+  // Setting restrictions for the navigation menu
   useEffect(() => {
-    const resizeHandler = () => {
-      setNavHeight(dotsRef.current.clientHeight);
+    const updateConstraints = () => {
+      if (parentRef.current && dotsRef.current) {
+        setNavHeight(dotsRef.current.offsetHeight);
+        setConstraints({
+          top: dotsRef.current.offsetHeight / 3, // Reducing the border from above
+          left: 0,
+          bottom:
+            parentRef.current.offsetHeight -
+            dotsRef.current.offsetHeight * 6 -
+            dotsRef.current.offsetHeight / 2, // Reducing the border from bellow
+          right: 0,
+        });
+      }
     };
-    window.addEventListener("resize", resizeHandler);
-    resizeHandler();
-    return () => {
-      window.removeEventListener("resize", resizeHandler);
-    };
-  }, [dotsRef]);
 
-  const [bottomConstraint, setBottomConstraint] = useState(0);
-  const [navBarY, setNavBarY] = useState(
-    parseInt(localStorage.getItem("navBarY")) || window.innerHeight * 0.05
-  );
-  const navBarRef = useRef(null);
+    updateConstraints();
+    window.addEventListener("resize", updateConstraints);
 
-  useEffect(() => {
-    setBottomConstraint(
-      Math.abs(messageNavbarHeight - navHeight * 6) - window.innerHeight * 0.02
-    );
-  }, [messageNavbarHeight, navHeight]);
+    return () => window.removeEventListener("resize", updateConstraints);
+  }, [parentRef]);
 
+  // Setting the Y position for the navigation menu
   const updateY = (info, event) => {
-    localStorage.setItem(
-      "navBarY",
-      Math.abs(navBarRef.current.getBoundingClientRect().y)
-    );
     setNavBarY(Math.abs(navBarRef.current.getBoundingClientRect().y));
   };
 
+  // Animation variant for navigation menu
   const divVariants = {
     hidden: {
       visibility: "hidden",
@@ -68,24 +84,6 @@ export default function NavigationMenu({ messageNavbarHeight }) {
     },
   };
 
-  const theme = isDarkMode ? (
-    <Sun
-      divVariants={divVariants}
-      setTheme={() => {
-        setIsDarkMode(!isDarkMode);
-      }}
-      showAll={showAll}
-    />
-  ) : (
-    <Moon
-      divVariants={divVariants}
-      setTheme={() => {
-        setIsDarkMode(!isDarkMode);
-      }}
-      showAll={showAll}
-    />
-  );
-
   return (
     <motion.div
       ref={navBarRef}
@@ -95,28 +93,32 @@ export default function NavigationMenu({ messageNavbarHeight }) {
       }
       drag="y"
       style={{
+        // Setting and checking Y position for navigation menu
         y:
-          navBarY > bottomConstraint || navBarY > window.innerHeight
-            ? bottomConstraint
+          navBarY > constraints.bottom || navBarY > window.innerHeight
+            ? constraints.bottom
             : navBarY,
       }}
       dragElastic={0.2}
-      dragConstraints={{
-        top: window.innerHeight * 0.05,
-        bottom: bottomConstraint,
-      }}
+      dragConstraints={constraints}
       initial={{ height: navHeight }}
-      animate={showAll ? { height: navHeight * 6 } : { height: navHeight }}
+      animate={
+        showAll
+          ? { height: navHeight * 6 + window.innerHeight * 0.02 }
+          : { height: navHeight }
+      }
       dragMomentum={false}
     >
       <AnimatePresence initial={false}>
-        <motion.div className="navigationbox">
+        <motion.ul className="navigation-box">
           <Dots
             dotsRef={dotsRef}
             toggleVisibility={toggleVisibility}
             showAll={showAll}
           />
+
           <User showAll={showAll} divVariants={divVariants} />
+
           <OrientationArrow
             navBarOrientation={navBarIsRight}
             setNavBarIsRight={() => {
@@ -125,12 +127,30 @@ export default function NavigationMenu({ messageNavbarHeight }) {
             divVariants={divVariants}
             showAll={showAll}
           />
-          {theme}
+
+          {isDarkMode ? (
+            <Sun
+              divVariants={divVariants}
+              setTheme={() => {
+                setIsDarkMode(!isDarkMode);
+              }}
+              showAll={showAll}
+            />
+          ) : (
+            <Moon
+              divVariants={divVariants}
+              setTheme={() => {
+                setIsDarkMode(!isDarkMode);
+              }}
+              showAll={showAll}
+            />
+          )}
+
           {<Info divVariants={divVariants} showAll={showAll} />}
+
           {<Chat divVariants={divVariants} showAll={showAll} />}
-        </motion.div>
+        </motion.ul>
       </AnimatePresence>
     </motion.div>
   );
 }
-// var navBarYposition = parseFloat(/translateY\((-?\d+(\.\d+)?(px)?)\)/.exec(navBarRef.current.style.transform)?.[1], 10)

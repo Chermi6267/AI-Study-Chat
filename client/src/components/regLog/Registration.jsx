@@ -5,7 +5,9 @@ import AuthServices from "../../services/authServices";
 import { useDispatch } from "react-redux";
 import { setUser } from "../../store/slices/userSlice";
 import { useNavigate } from "react-router-dom";
+import Dots from "../Dots/Dots";
 
+// Registration page component
 export default function Registration() {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
@@ -13,14 +15,16 @@ export default function Registration() {
   const [password2, setPassword2] = useState("");
   const [errors, setErrors] = useState("");
   const dispatch = useDispatch();
-
   const [isPassword, setIsPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
 
+  // Redirect processing to url
   const navigate = useNavigate();
   const redirect = (url) => {
     navigate(url);
   };
 
+  // Setting and validating username in form
   const usernameChangeHandler = (e) => {
     setUsername(e.target.value);
     if (e.target.value === "") {
@@ -30,6 +34,7 @@ export default function Registration() {
     }
   };
 
+  // Setting and validating email in form
   const emailChangeHandler = (e) => {
     setEmail(e.target.value);
     if (e.target.value === "") {
@@ -39,6 +44,7 @@ export default function Registration() {
     }
   };
 
+  // Setting and validating password1 in form
   const password1ChangeHandler = (e) => {
     setPassword1(e.target.value);
     if (e.target.value === "") {
@@ -48,6 +54,7 @@ export default function Registration() {
     }
   };
 
+  // Setting and validating password2 in form
   const password2ChangeHandler = (e) => {
     setPassword2(e.target.value);
     if (e.target.value === "") {
@@ -57,6 +64,7 @@ export default function Registration() {
     }
   };
 
+  // Show/hide password
   useEffect(() => {
     const password =
       document.querySelector("#password1") ||
@@ -73,6 +81,7 @@ export default function Registration() {
     }
   }, [isPassword]);
 
+  // Handling user registration
   const handleRegister = (username, email, password1, password2) => {
     setLoading(true);
     if (password1 !== password2) {
@@ -87,6 +96,7 @@ export default function Registration() {
         setPassword1("");
         setPassword2("");
         setLoading(false);
+        // Storing logged in user
         dispatch(
           setUser({
             id: response.data.data["id"],
@@ -97,6 +107,7 @@ export default function Registration() {
           })
         );
         console.log(`${response.data.data["username"]} signed up`);
+        // Storing access token
         localStorage.setItem("token", response.data.data["access_token"]);
         redirect("/");
       })
@@ -110,30 +121,6 @@ export default function Registration() {
         console.log(error);
       });
   };
-
-  const [loading, setLoading] = useState(false);
-
-  const [dots, setDots] = useState(".");
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setDots((prevDots) => {
-        switch (prevDots) {
-          case ".":
-            return "..";
-          case "..":
-            return "...";
-          case "...":
-            return "....";
-          case "....":
-            return ".";
-          default:
-            return ".";
-        }
-      });
-    }, 300);
-
-    return () => clearInterval(interval);
-  }, []);
 
   return (
     <div>
@@ -218,7 +205,13 @@ export default function Registration() {
           }}
           className="submit-btn"
         >
-          {loading ? <p className="dots">{dots}</p> : "Зарегистрироваться"}
+          {loading ? (
+            <p className="dots">
+              {<Dots text={"Регистрация"} intervalTime={300} />}
+            </p>
+          ) : (
+            "Зарегистрироваться"
+          )}
         </button>
       </form>
     </div>

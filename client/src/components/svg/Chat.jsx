@@ -36,7 +36,7 @@ export default function Chat({ showAll, divVariants }) {
   };
 
   return (
-    <motion.div
+    <motion.li
       variants={divVariants}
       initial="hidden"
       animate={showAll ? "visible" : "hidden"}
@@ -73,6 +73,6 @@ export default function Chat({ showAll, divVariants }) {
           strokeLinecap="round"
         />
       </motion.svg>
-    </motion.div>
+    </motion.li>
   );
 }

@@ -23,6 +23,7 @@ export default function User({ showAll, divVariants }) {
       scale: 1.2,
     },
   };
+
   const fisrtSecondPath = {
     hidden: {
       translateY: 0,
@@ -31,6 +32,7 @@ export default function User({ showAll, divVariants }) {
       translateY: "-1px",
     },
   };
+
   const thirdPath = {
     hidden: {
       rotate: 360,
@@ -41,7 +43,7 @@ export default function User({ showAll, divVariants }) {
   };
 
   return (
-    <motion.div
+    <motion.li
       variants={divVariants}
       initial="hidden"
       animate={showAll ? "visible" : "hidden"}
@@ -74,6 +76,6 @@ export default function User({ showAll, divVariants }) {
           strokeLinecap="round"
         />
       </motion.svg>
-    </motion.div>
+    </motion.li>
   );
 }
