@@ -52,7 +52,6 @@ class ChatService {
 
         const chat = await ChatRepository.createChat(userID, title);
         chatID = chat.insertId;
-        console.log(chat, 1);
       }
 
       // Saving user request

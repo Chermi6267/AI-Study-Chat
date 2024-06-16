@@ -111,7 +111,7 @@ export default function Input({
 
     await ChatService.sendText(selectedChat, inputValue)
       .then((res) => {
-        console.log(res.data);
+        // console.log(res.data);
         if (res.data["chat_id"] === undefined) {
           selectChat(false);
         } else {
@@ -154,7 +154,7 @@ export default function Input({
 
     await ChatService.sendIMG(file, inputValue, selectedChat)
       .then((res) => {
-        console.log(res);
+        // console.log(res);
         if (res.data["chat_id"] === undefined) {
           selectChat(false);
         } else {

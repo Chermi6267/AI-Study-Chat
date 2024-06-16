@@ -26,7 +26,6 @@ export default function ChatsMenu({ chatsMenuTrigger, setChatsMenuTrigger }) {
     ChatService.chatList()
       .then((res) => {
         setChatsData(res.data);
-        console.log(res);
         setLoading(false);
       })
       .catch((error) => {
